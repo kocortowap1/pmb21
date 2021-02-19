@@ -1,2 +1,2 @@
-# pmb21
+# PMB Universitas Nurul Jadid
 Frontend PMB public
