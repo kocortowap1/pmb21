@@ -1,5 +1,4 @@
 <template>
-  <div>
     <b-navbar toggleable="lg" type="light" variant="light" class="shadow-sm">
       <div class="container">
         <b-navbar-brand href="/">PMB UNUJA</b-navbar-brand>
@@ -49,8 +48,8 @@
               </b-nav-item>
             </div>
             <div v-else>
-                <button class="btn btn-success" @click.prevent="toLink('/login')">Login</button>
-                <button class="btn btn-primary mx-1" @click.prevent="toLink('/register')">Mendaftar</button>
+                <button v-if="$route.path !== '/login'" class="btn btn-success" @click.prevent="toLink('/login')">Login</button>
+                <button v-if="$route.path !== '/register'" class="btn btn-primary mx-1" @click.prevent="toLink('/register')">Mendaftar</button>
               <!-- <b-nav-item href="/login" class="btn btn-primary">Login</b-nav-item> -->
               <!-- <b-nav-item href="/register" class="btn btn-success">Register</b-nav-item> -->
             </div>
@@ -58,7 +57,6 @@
         </b-collapse>
       </div>
     </b-navbar>
-  </div>
 </template>
 
 <script>
@@ -67,9 +65,9 @@ export default {
   name: "mainNavbar",
   methods: {
     logout() {
-      this.$store.dispatch("logout").then(() => {
+      this.$store.dispatch("auth/logout").then(() => {
         this.$router.push("/login");
-        window.removeEventListener('beforeunload', false)
+        // window.removeEventListener('beforeunload', false)
       });
     },
     toLink(link){
@@ -79,15 +77,15 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isLoggedIn: "isLoggedIn"
+      isLoggedIn: "auth/isLoggedIn"
     })
   }
 };
 </script>
 
 <style lang="scss">
-.navbar {
-  background-color: #fff !important;
+// .navbar {
+  // background-color: #fff !important;
   // z-index: 9000;
-}
+// }
 </style>
