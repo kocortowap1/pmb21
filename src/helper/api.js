@@ -11,7 +11,7 @@ const removeAuthorization = () => {
 }
 
 const isStoringToken = () => {
-    return !!localStorage.getItem('a')
+    return !!localStorage.getItem('b')
 }
 const isActiveSession = (token) => {
     const tokenBody = token.split('.')[1]
@@ -49,12 +49,56 @@ const getPublicData = async(url) => {
    const req = await axios.get(url)
     return req
 }
+const postPublicData = async(url, data) => {
+    let response = {status: false}
+    try {
+        const req = await axios.post(url, data, {
+            headers: {
+                'Content-Type' : 'application/json'
+            }
+        })
+        if(!req.data.status){
+            response['message'] = req.data.message
+        }else{
+            // response.status = true
+            // response['data'] = req.data
+            response = req.data
+        }
+
+    } catch (error) {
+        response = error
+    }
+    return response
+}
+// const putPublicData = async(url, data) => {
+//     let response = {status: false}
+//     try {
+//         const req = await axios.put(url, data, {
+//             headers: {
+//                 'Content-Type' : 'application/json'
+//             }
+//         })
+//         if(req.status !== 200){
+//             response['message'] = req.data.message
+//         }else{
+//             response.status = true
+//             response['data'] = data
+//         }
+
+//     } catch (error) {
+//         response = error
+//     }
+//     return response
+// }
 
 
-export default {
+export {
     setAuthorization,
     removeAuthorization,
     isStoringToken,
     isActiveSession,
-    login
+    login,
+    getPublicData,
+    postPublicData,
+
 }
