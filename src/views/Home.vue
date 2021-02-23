@@ -3,6 +3,7 @@
     <section class="my-0 ">
       <Jumbotron />
     </section>
+    <h1 class="text-center">Contoh</h1>
     <section class="my-md-2">
       <Jalur />
     </section>
