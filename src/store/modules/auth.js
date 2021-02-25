@@ -1,4 +1,4 @@
-import { login, removeAuthorization, postPublicData, getPublicData } from '../../helper/api'
+import { login, removeAuthorization, postPublicData, getPublicData, setAuthorization } from '../../helper/api'
 const state = {
     token: localStorage.getItem('b') || '',
     person: {},
@@ -14,12 +14,13 @@ const mutations = {
     }
 }
 const actions = {
-    login({ commit }, { email, password }) {
+    getToken({ commit }, { email, password }) {
         return new Promise((resolve, reject) => {
             try {
                 login(email, password).then(res => {
                     if (res.status) {
                         commit('SET_TOKEN', res.token)
+                        setAuthorization(res.token)
                         resolve(res)
                     } else {
                         commit('SET_ERROR', { isError: true, errorMessage: res.message }, { root: true })
@@ -34,10 +35,11 @@ const actions = {
             }
         })
     },
-    logout() {
+    logout({commit}) {
         return new Promise((resolve) => {
             removeAuthorization()
-            localStorage.removeItem('a')
+            commit('SET_TOKEN', '')
+            localStorage.removeItem('b')
             resolve()
         })
 
