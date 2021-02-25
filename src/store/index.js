@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import auth from './modules/auth'
+import pendaftar from './modules/pendaftar'
+import referensi from './modules/referensi'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -26,6 +28,8 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    auth
+    auth,
+    pendaftar,
+    referensi
   }
 })
