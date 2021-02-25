@@ -251,7 +251,7 @@
                           type="text"
                           v-model="person.nomor_hp"
                           class="form-control"
-                          placeholder="contoh: 0812345673"
+                          placeholder="Nomor HP/WA/Telegram"
                           inputmode="numeric"
                         />
                         <small class="text-danger">{{ v.errors[0] }}</small>
@@ -289,6 +289,9 @@
 import tanggalIndo from "../helper/date";
 import { ValidationProvider, ValidationObserver } from "vee-validate";
 import {
+  BContainer,
+  BRow,
+  BCol,
   BCard,
   BCardTitle,
   BCardText,
@@ -307,6 +310,9 @@ export default {
   components: {
     ValidationProvider,
     ValidationObserver,
+    BContainer,
+    BRow,
+    BCol,
     BCard,
     BCardTitle,
     BCardText,
@@ -349,12 +355,14 @@ export default {
       this.passwordType = this.passwordType == "password" ? "text" : "password";
       this.passwordIcon = this.passwordIcon == "eye" ? "eye-slash" : "eye";
     },
+
     registrasi() {
       let data = this.person;
       data["tanggal_lahir"] = this.tanggalLahir;
       this.$store
-        .dispatch("auth/registrasi", data)
-        .then(() => {
+        .dispatch("auth/registrasi", { person: data })
+        .then((res) => {
+          console.log(res);
           this.createModal(
             "Sukses",
             "success",
@@ -364,7 +372,7 @@ export default {
               this.$nextTick(() => {
                 this.resetForm();
               });
-              this.$router.push("/login");
+              this.$router.push(`/login?email=${this.person.email}`);
             })
             .catch(() => {
               return false;
@@ -396,11 +404,9 @@ export default {
       this.$bvModal.msgBoxOk(content, option);
     },
     checkEmail(e) {
-      // console.log(e.target.value)
       this.$store
         .dispatch("auth/checkExistEmail", e.target.value)
         .then((res) => {
-          // console.log(res)
           if (!res.status) {
             return false;
           } else {
