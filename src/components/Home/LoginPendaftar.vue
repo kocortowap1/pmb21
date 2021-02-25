@@ -65,7 +65,9 @@
                         ></span>
                         Login
                       </button>
-                      <a href="/reset-password" class="btn btn-link">Lupa Password ?</a>
+                      <a href="/reset-password" class="btn btn-link"
+                        >Lupa Password ?</a
+                      >
                     </div>
                   </form>
                   <p class="text-danger" v-show="isError">{{ errorMessage }}</p>
@@ -96,6 +98,7 @@ export default {
     return {
       email: "",
       password: "",
+      userData: {},
     };
   },
   methods: {
@@ -105,13 +108,34 @@ export default {
       this.$store.commit("SET_LOADING", true, { root: true });
 
       this.$store
-        .dispatch("getToken", { email: this.email, password: this.password })
-        .then((res) => {
-          console.log(res);
+        .dispatch("auth/getToken", {
+          email: this.email,
+          password: this.password,
         })
-        .then(() => {
-          this.$router.push("/pendaftar");
+        .then((res) => {
+          // console.log(res);
+          if (res.status) {
+            const userData = this.tokenParser(res.token);
+            // this.$store
+            //   .dispatch("pendaftar/getPendaftar", userData.id_user)
+            //   .then((res2) => {
+            //     if(Object.entries(res2).length){
+                    this.$router.push(`/pendaftar/${userData.id_user}`);
+
+            //     }
+            //   });
+          }
+        })
+        .catch((err) => console.log(err))
+        .finally(() => {
+          this.$store.commit("SET_LOADING", false, { root: true });
         });
+      // .then(() => {
+      // });
+    },
+    tokenParser(token) {
+      const tokenBody = token.split(".")[1];
+      return JSON.parse(atob(tokenBody));
     },
   },
   computed: {
