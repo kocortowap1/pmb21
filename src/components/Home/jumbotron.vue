@@ -7,6 +7,8 @@
             src="../../assets/emblem.png"
             class="mt-4"
             alt="Emblem"
+            height="120"
+            width="120"
             style="width: 120px"
           />
         </div>
