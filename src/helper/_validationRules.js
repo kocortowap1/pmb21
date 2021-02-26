@@ -1,7 +1,7 @@
 import { extend } from 'vee-validate'
 
 import {configure} from 'vee-validate'
-import { required, email, regex,  numeric, oneOf, mimes, image, confirmed } from 'vee-validate/dist/rules'
+import { required, email, regex,  numeric, oneOf, mimes, image, confirmed, required_if } from 'vee-validate/dist/rules'
 
 const validationConfig ={
     classes:{
@@ -14,6 +14,10 @@ extend("required", {
     ...required,
     message: "{_field_} harus diisi"
 });
+extend("required_if",{
+    ...required_if,
+    message: "{_field_} harus diisi jika belum wafat"
+})
 extend("one_of", {
     validate(value, values) {
         return values.indexOf(value) !== -1;
