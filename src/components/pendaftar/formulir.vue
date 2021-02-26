@@ -433,6 +433,7 @@
           <validation-provider
             name="Rentang Usia Ayah"
             rules="required"
+            vid="ayah_wafat"
             v-slot="{ valid, errors }"
           >
             <b-form-group
@@ -468,8 +469,12 @@
               <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
             </b-form-group>
           </validation-provider>
-          <validation-provider name="Nama Ayah" rules="required" v-slot="{valid, errors}">
-             <b-form-group
+          <validation-provider
+            name="Nama Ayah"
+            rules="required"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
               label="Nama Ayah"
               label-cols="12"
               label-cols-sm="5"
@@ -484,6 +489,326 @@
                 placeholder="Nama Ayah"
               ></b-form-input>
               <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
+            </b-form-group>
+          </validation-provider>
+          <validation-provider name="Tempat Lahir Ayah" rules="">
+            <b-form-group
+              label="Tempat Lahir Ayah"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-input
+                v-model="form.tempat_lahir_ayah"
+                class="col-12 col-sm-8 col-md-6"
+                placeholder="Tempat Lahir Ayah"
+              ></b-form-input>
+            </b-form-group>
+          </validation-provider>
+          <validation-provider name="Tanggal Lahir Ayah">
+            <b-form-group
+              label="Tanggal Lahir Ayah"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-datepicker
+                v-model="form.tanggal_lahir_ayah"
+                class="col-12 col-md-6"
+                locale="id-ID"
+              ></b-form-datepicker>
+            </b-form-group>
+          </validation-provider>
+          <validation-provider
+            name="Pekerjaan Ayah"
+            rules="required_if:ayah_wafat,T,30,40,50,60"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="Pekerjaan Ayah"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-select
+                v-model="form.id_pekerjaan_ayah"
+              :state="errors[0] ? false : valid ? true : null"
+                class="col-12 col-md-6"
+              >
+                <b-form-select-option :value="null"
+                  >Pilih Pekerjaan Ayah</b-form-select-option
+                >
+                <b-form-select-option
+                  v-for="p in listPekerjaan"
+                  :key="p.id_pekerjaan"
+                  :value="p.id_pekerjaan"
+                  >{{ p.pekerjaan }}</b-form-select-option
+                >
+              </b-form-select>
+              <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
+
+            </b-form-group>
+          </validation-provider>
+          <validation-provider
+            name="Pendidikan Ayah"
+            rules="required_if:ayah_wafat,T,30,40,50,60"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="Pendidikan Ayah"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-select
+                v-model="form.id_jenjang_pendidikan_ayah"
+              :state="errors[0] ? false : valid ? true : null"
+                class="col-12 col-md-6"
+              >
+                <b-form-select-option :value="null"
+                  >Pilih Pendidikan Ayah</b-form-select-option
+                >
+                <b-form-select-option
+                  v-for="p in listPendidikan"
+                  :key="p.id_jenjang_pendidikan"
+                  :value="p.id_jenjang_pendidikan"
+                  >{{ p.jenjang_pendidikan }}</b-form-select-option
+                >
+              </b-form-select>
+              <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
+
+            </b-form-group>
+          </validation-provider>
+          <validation-provider
+            name="Penghasilan Ayah"
+            rules="required_if:ayah_wafat,T,30,40,50,60"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="Penghasilan Ayah"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-select
+                v-model="form.id_penghasilan_ayah"
+              :state="errors[0] ? false : valid ? true : null"
+                class="col-12 col-md-6"
+              >
+                <b-form-select-option :value="null"
+                  >Pilih Penghasilan Ayah</b-form-select-option
+                >
+                <b-form-select-option
+                  v-for="p in listPenghasilan"
+                  :key="p.id_penghasilan"
+                  :value="p.id_penghasilan"
+                  >{{ p.penghasilan }}</b-form-select-option
+                >
+              </b-form-select>
+              <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
+
+            </b-form-group>
+          </validation-provider>
+
+          <!---IBU -->
+          <hr class="my-2">
+          <validation-provider
+            name="Rentang Usia Ibu"
+            rules="required"
+            vid="ayah_wafat"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="Rentang Usia Ibu"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-select
+                v-model="form.is_ibu_wafat"
+                :state="errors[0] ? false : valid ? true : null"
+                class="col-12 col-sm-8 col-md-6"
+              >
+                <b-form-select-option value="T"
+                  >Rentang Usia Ibu</b-form-select-option
+                >
+                <b-form-select-option value="30"
+                  >30 - 40 Tahun</b-form-select-option
+                >
+                <b-form-select-option value="40"
+                  >40 - 50 Tahun</b-form-select-option
+                >
+                <b-form-select-option value="30"
+                  >50 - 60 Tahun</b-form-select-option
+                >
+                <b-form-select-option value="30">
+                  > 60 Tahun</b-form-select-option
+                >
+                <b-form-select-option value="Y">Wafat</b-form-select-option>
+              </b-form-select>
+              <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
+            </b-form-group>
+          </validation-provider>
+          <validation-provider
+            name="Nama Ibu"
+            rules="required"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="Nama Ibu"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-input
+                v-model="form.nama_ibu"
+                :state="errors[0] ? false : valid ? true : null"
+                class="col-12 col-sm-8 col-md-6"
+                placeholder="Nama Ibu"
+              ></b-form-input>
+              <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
+            </b-form-group>
+          </validation-provider>
+          <validation-provider name="Tempat Lahir Ibu" rules="">
+            <b-form-group
+              label="Tempat Lahir Ibu"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-input
+                v-model="form.tempat_lahir_ibu"
+                class="col-12 col-sm-8 col-md-6"
+                placeholder="Tempat Lahir Ibu"
+              ></b-form-input>
+            </b-form-group>
+          </validation-provider>
+          <validation-provider name="Tanggal Lahir Ibu">
+            <b-form-group
+              label="Tanggal Lahir Ibu"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-datepicker
+                v-model="form.tanggal_lahir_ibu"
+                class="col-12 col-md-6"
+                locale="id-ID"
+              ></b-form-datepicker>
+            </b-form-group>
+          </validation-provider>
+          <validation-provider
+            name="Pekerjaan Ibu"
+            rules="required_if:ayah_wafat,T,30,40,50,60"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="Pekerjaan Ibu"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-select
+                v-model="form.id_pekerjaan_ibu"
+              :state="errors[0] ? false : valid ? true : null"
+                class="col-12 col-md-6"
+              >
+                <b-form-select-option :value="null"
+                  >Pilih Pekerjaan Ibu</b-form-select-option
+                >
+                <b-form-select-option
+                  v-for="p in listPekerjaan"
+                  :key="p.id_pekerjaan"
+                  :value="p.id_pekerjaan"
+                  >{{ p.pekerjaan }}</b-form-select-option
+                >
+              </b-form-select>
+              <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
+
+            </b-form-group>
+          </validation-provider>
+          <validation-provider
+            name="Pendidikan Ibu"
+            rules="required_if:ayah_wafat,T,30,40,50,60"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="Pendidikan Ibu"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-select
+                v-model="form.id_jenjang_pendidikan_ibu"
+              :state="errors[0] ? false : valid ? true : null"
+                class="col-12 col-md-6"
+              >
+                <b-form-select-option :value="null"
+                  >Pilih Pendidikan Ibu</b-form-select-option
+                >
+                <b-form-select-option
+                  v-for="p in listPendidikan"
+                  :key="p.id_jenjang_pendidikan"
+                  :value="p.id_jenjang_pendidikan"
+                  >{{ p.jenjang_pendidikan }}</b-form-select-option
+                >
+              </b-form-select>
+              <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
+
+            </b-form-group>
+          </validation-provider>
+          <validation-provider
+            name="Penghasilan Ibu"
+            rules="required_if:ayah_wafat,T,30,40,50,60"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="Penghasilan Ibu"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-select
+                v-model="form.id_penghasilan_ibu"
+              :state="errors[0] ? false : valid ? true : null"
+                class="col-12 col-md-6"
+              >
+                <b-form-select-option :value="null"
+                  >Pilih Penghasilan Ibu</b-form-select-option
+                >
+                <b-form-select-option
+                  v-for="p in listPenghasilan"
+                  :key="p.id_penghasilan"
+                  :value="p.id_penghasilan"
+                  >{{ p.penghasilan }}</b-form-select-option
+                >
+              </b-form-select>
+              <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
+
             </b-form-group>
           </validation-provider>
         </div>
@@ -553,6 +878,15 @@ export default {
     },
     listDesa() {
       return this.$store.state.referensi.referensi["desa"] || [];
+    },
+    listPekerjaan() {
+      return this.$store.state.referensi.referensi["pekerjaan"] || [];
+    },
+    listPendidikan() {
+      return this.$store.state.referensi.referensi["jenjang"] || [];
+    },
+    listPenghasilan() {
+      return this.$store.state.referensi.referensi["penghasilan"] || [];
     },
     ...mapGetters({
       biodata: "pendaftar/biodataKosong",
