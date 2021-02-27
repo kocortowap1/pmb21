@@ -25,6 +25,7 @@ const actions = {
                     } else {
                         commit('SET_ERROR', { isError: true, errorMessage: res.message }, { root: true })
                     }
+                    commit("SET_LOADING", false, { root: true });
 
                 })
 

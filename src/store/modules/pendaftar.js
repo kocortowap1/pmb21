@@ -49,6 +49,15 @@ const actions = {
 }
 const getters = {
     // pendaftar : state => state.person,
+    personData : (state) =>{
+        let newObj = {}
+        for (const key in state.person) {
+            if(typeof state.person[key] !== 'object' || state.person[key] === null){
+                newObj[key] = state.person[key]
+            }
+        }
+        return newObj
+    },
     biodataKosong: (state) => {
         const keyCheck = mapField.dataDiri
         let hasil = []
@@ -69,6 +78,7 @@ const getters = {
         })
         return hasil
     },
+
 }
 
 export default {

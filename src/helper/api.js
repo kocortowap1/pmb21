@@ -40,6 +40,8 @@ const login = async (email, password) => {
         // setAuthorization(req.headers['x-token'])
         response.status = true
         response.token = req.headers['x-token']
+    }else if(req.status === 200 && req.data.status=== false) {
+        response = req.data
     } else {
         response['message'] = 'Terjadi kesalahan, silakan coba lagi'
         removeAuthorization()
