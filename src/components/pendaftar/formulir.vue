@@ -524,6 +524,7 @@
             </b-form-group>
           </validation-provider>
           <validation-provider
+            v-if="form.is_ayah_wafat !== 'Y'"
             name="Pekerjaan Ayah"
             rules="required_if:ayah_wafat,T,30,40,50,60"
             v-slot="{ valid, errors }"
@@ -538,7 +539,7 @@
             >
               <b-form-select
                 v-model="form.id_pekerjaan_ayah"
-              :state="errors[0] ? false : valid ? true : null"
+                :state="errors[0] ? false : valid ? true : null"
                 class="col-12 col-md-6"
               >
                 <b-form-select-option :value="null"
@@ -552,11 +553,11 @@
                 >
               </b-form-select>
               <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
-
             </b-form-group>
           </validation-provider>
           <validation-provider
             name="Pendidikan Ayah"
+            v-if="form.is_ayah_wafat !== 'Y'"
             rules="required_if:ayah_wafat,T,30,40,50,60"
             v-slot="{ valid, errors }"
           >
@@ -570,7 +571,7 @@
             >
               <b-form-select
                 v-model="form.id_jenjang_pendidikan_ayah"
-              :state="errors[0] ? false : valid ? true : null"
+                :state="errors[0] ? false : valid ? true : null"
                 class="col-12 col-md-6"
               >
                 <b-form-select-option :value="null"
@@ -584,11 +585,11 @@
                 >
               </b-form-select>
               <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
-
             </b-form-group>
           </validation-provider>
           <validation-provider
             name="Penghasilan Ayah"
+            v-if="form.is_ayah_wafat !== 'Y'"
             rules="required_if:ayah_wafat,T,30,40,50,60"
             v-slot="{ valid, errors }"
           >
@@ -602,7 +603,7 @@
             >
               <b-form-select
                 v-model="form.id_penghasilan_ayah"
-              :state="errors[0] ? false : valid ? true : null"
+                :state="errors[0] ? false : valid ? true : null"
                 class="col-12 col-md-6"
               >
                 <b-form-select-option :value="null"
@@ -616,12 +617,56 @@
                 >
               </b-form-select>
               <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
+            </b-form-group>
+          </validation-provider>
+          <validation-provider
+            name="NIK Ayah"
+            v-if="form.is_ayah_wafat !== 'Y'"
+            rules="required"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="NIK Ayah"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-input
+                v-model="form.nik_ayah"
+                placeholder="16 Digit No KTP Ayah"
+                class="col-12 col-sm-8 col-md-6"
+                :state="errors[0] ? false : valid ? true : null"
+              ></b-form-input>
+            </b-form-group>
+          </validation-provider>
+          <validation-provider
+            name="Nomor HP Ayah"
+            rules="required"
 
+            v-if="form.is_ayah_wafat !== 'Y'"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="Nomor HP Ayah"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-input
+                v-model="form.nomor_hp_ayah"
+                placeholder="Nomor HP Ayah"
+                class="col-12 col-sm-8 col-md-6"
+                :state="errors[0] ? false : valid ? true : null"
+              ></b-form-input>
             </b-form-group>
           </validation-provider>
 
           <!---IBU -->
-          <hr class="my-2">
+          <hr class="my-2" />
           <validation-provider
             name="Rentang Usia Ibu"
             rules="required"
@@ -716,8 +761,9 @@
             </b-form-group>
           </validation-provider>
           <validation-provider
+            v-if="form.is_ibu_wafat !== 'Y'"
             name="Pekerjaan Ibu"
-            rules="required_if:ayah_wafat,T,30,40,50,60"
+            rules="required"
             v-slot="{ valid, errors }"
           >
             <b-form-group
@@ -730,7 +776,7 @@
             >
               <b-form-select
                 v-model="form.id_pekerjaan_ibu"
-              :state="errors[0] ? false : valid ? true : null"
+                :state="errors[0] ? false : valid ? true : null"
                 class="col-12 col-md-6"
               >
                 <b-form-select-option :value="null"
@@ -744,12 +790,12 @@
                 >
               </b-form-select>
               <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
-
             </b-form-group>
           </validation-provider>
           <validation-provider
+            v-if="form.is_ibu_wafat !== 'Y'"
             name="Pendidikan Ibu"
-            rules="required_if:ayah_wafat,T,30,40,50,60"
+            rules="required"
             v-slot="{ valid, errors }"
           >
             <b-form-group
@@ -762,7 +808,7 @@
             >
               <b-form-select
                 v-model="form.id_jenjang_pendidikan_ibu"
-              :state="errors[0] ? false : valid ? true : null"
+                :state="errors[0] ? false : valid ? true : null"
                 class="col-12 col-md-6"
               >
                 <b-form-select-option :value="null"
@@ -776,12 +822,12 @@
                 >
               </b-form-select>
               <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
-
             </b-form-group>
           </validation-provider>
           <validation-provider
             name="Penghasilan Ibu"
-            rules="required_if:ayah_wafat,T,30,40,50,60"
+            v-if="form.is_ibu_wafat !== 'Y'"
+            rules="required"
             v-slot="{ valid, errors }"
           >
             <b-form-group
@@ -794,7 +840,7 @@
             >
               <b-form-select
                 v-model="form.id_penghasilan_ibu"
-              :state="errors[0] ? false : valid ? true : null"
+                :state="errors[0] ? false : valid ? true : null"
                 class="col-12 col-md-6"
               >
                 <b-form-select-option :value="null"
@@ -808,7 +854,301 @@
                 >
               </b-form-select>
               <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
-
+            </b-form-group>
+          </validation-provider>
+          <validation-provider
+            name="NIK Ibu"
+            v-if="form.is_ibu_wafat !== 'Y'"
+            rules="required"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="NIK Ibu"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-input
+                v-model="form.nik_ibu"
+                placeholder="16 Digit No KTP Ibu"
+                class="col-12 col-sm-8 col-md-6"
+                :state="errors[0] ? false : valid ? true : null"
+              ></b-form-input>
+            </b-form-group>
+          </validation-provider>
+          <validation-provider
+            name="Nomor HP Ibu"
+            v-if="form.is_ibu_wafat !== 'Y'"
+            rules="required"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="Nomor HP Ibu"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-input
+                v-model="form.nomor_hp_ibu"
+                placeholder="Nomor HP Ibu"
+                class="col-12 col-sm-8 col-md-6"
+                :state="errors[0] ? false : valid ? true : null"
+              ></b-form-input>
+            </b-form-group>
+          </validation-provider>
+          <!--WALI-->
+          <hr class="my-2" />
+          <validation-provider
+            name="Jenis Wali"
+            rules="required"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="Pilihan Wali"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-select
+                v-model="form.jenis_wali"
+                :state="errors[0] ? false : valid ? true : null"
+                class="col-12 col-md-6"
+                @change="setDataWali($event)"
+              >
+                <b-form-select-option :value="null"
+                  >Pilih Wali</b-form-select-option
+                >
+                <b-form-select-option
+                  v-if="form.is_ayah_wafat !== 'Y'"
+                  value="1"
+                  >Ayah sebagai Wali</b-form-select-option
+                >
+                <b-form-select-option v-if="form.is_ibu_wafat !== 'Y'" value="2"
+                  >Ibu sebagai Wali</b-form-select-option
+                >
+                <b-form-select-option value="3">Lainnya</b-form-select-option>
+              </b-form-select>
+            </b-form-group>
+          </validation-provider>
+          <validation-provider
+            v-if="form.jenis_wali === '3'"
+            name="Nama Wali"
+            rules="required"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="Nama Wali"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-input
+                v-model="form.nama_wali"
+                :state="errors[0] ? false : valid ? true : null"
+                class="col-12 col-sm-8 col-md-6"
+                placeholder="Nama Wali"
+              ></b-form-input>
+              <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
+            </b-form-group>
+          </validation-provider>
+          <validation-provider
+            v-if="form.jenis_wali === '3'"
+            name="Jenis Kelamin Wali"
+            rules="required"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="Jenis Kelamin Wali"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-radio-group
+                :state="errors[0] ? false : valid ? true : null"
+                v-model="form.jk_wali"
+                class="col-12 col-sm-8 col-md-6"
+              >
+                <b-form-radio value="L">Laki-laki</b-form-radio>
+                <b-form-radio value="P">Perempuan</b-form-radio>
+              </b-form-radio-group>
+            </b-form-group>
+          </validation-provider>
+           <validation-provider name="Tempat Lahir Wali" rules="">
+            <b-form-group
+              label="Tempat Lahir Wali"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-input
+                v-model="form.tempat_lahir_wali"
+                class="col-12 col-sm-8 col-md-6"
+                placeholder="Tempat Lahir Wali"
+              ></b-form-input>
+            </b-form-group>
+          </validation-provider>
+          <validation-provider name="Tanggal Lahir Wali">
+            <b-form-group
+              label="Tanggal Lahir Wali"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-datepicker
+                v-model="form.tanggal_lahir_wali"
+                class="col-12 col-md-6"
+                locale="id-ID"
+              ></b-form-datepicker>
+            </b-form-group>
+          </validation-provider>
+          <validation-provider
+            name="Pekerjaan Wali"
+            rules="required"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="Pekerjaan Wali"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-select
+                v-model="form.id_pekerjaan_wali"
+                :state="errors[0] ? false : valid ? true : null"
+                class="col-12 col-md-6"
+              >
+                <b-form-select-option :value="null"
+                  >Pilih Pekerjaan Wali</b-form-select-option
+                >
+                <b-form-select-option
+                  v-for="p in listPekerjaan"
+                  :key="p.id_pekerjaan"
+                  :value="p.id_pekerjaan"
+                  >{{ p.pekerjaan }}</b-form-select-option
+                >
+              </b-form-select>
+              <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
+            </b-form-group>
+          </validation-provider>
+          <validation-provider
+            name="Pendidikan Wali"
+            rules="required"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="Pendidikan Wali"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-select
+                v-model="form.id_jenjang_pendidikan_wali"
+                :state="errors[0] ? false : valid ? true : null"
+                class="col-12 col-md-6"
+              >
+                <b-form-select-option :value="null"
+                  >Pilih Pendidikan Wali</b-form-select-option
+                >
+                <b-form-select-option
+                  v-for="p in listPendidikan"
+                  :key="p.id_jenjang_pendidikan"
+                  :value="p.id_jenjang_pendidikan"
+                  >{{ p.jenjang_pendidikan }}</b-form-select-option
+                >
+              </b-form-select>
+              <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
+            </b-form-group>
+          </validation-provider>
+          <validation-provider
+            name="Penghasilan Wali"
+            v-if="form.is_ibu_wafat !== 'Y'"
+            rules="required"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="Penghasilan Wali"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-select
+                v-model="form.id_penghasilan_wali"
+                :state="errors[0] ? false : valid ? true : null"
+                class="col-12 col-md-6"
+              >
+                <b-form-select-option :value="null"
+                  >Pilih Penghasilan Wali</b-form-select-option
+                >
+                <b-form-select-option
+                  v-for="p in listPenghasilan"
+                  :key="p.id_penghasilan"
+                  :value="p.id_penghasilan"
+                  >{{ p.penghasilan }}</b-form-select-option
+                >
+              </b-form-select>
+              <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
+            </b-form-group>
+          </validation-provider>
+          <validation-provider
+            name="NIK Wali"
+            rules="required"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="NIK Wali"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-input
+                v-model="form.nik_wali"
+                placeholder="16 Digit No KTP Wali"
+                class="col-12 col-sm-8 col-md-6"
+                :state="errors[0] ? false : valid ? true : null"
+              ></b-form-input>
+            </b-form-group>
+          </validation-provider>
+          <validation-provider
+            name="Nomor HP Wali"
+            rules="required"
+            v-slot="{ valid, errors }"
+          >
+            <b-form-group
+              label="Nomor HP Wali"
+              label-cols="12"
+              label-cols-sm="5"
+              label-cols-md="3"
+              label-class="mb-0 pb-1"
+              class="mb-1"
+            >
+              <b-form-input
+                v-model="form.nomor_hp_wali"
+                placeholder="Nomor HP Wali"
+                class="col-12 col-sm-8 col-md-6"
+                :state="errors[0] ? false : valid ? true : null"
+              ></b-form-input>
             </b-form-group>
           </validation-provider>
         </div>
@@ -925,6 +1265,23 @@ export default {
       // this.$store.dispatch("referensi/getDesa", val.substr(0, 6));
       // console.log(`${typeof val} : ${val.substr(0,6)}`)
     },
+    setDataWali(val){
+      // const val = e.target.value;
+      // const jk = val == '1' ? 'L' : 'P';
+      if(val === '3'){
+        return false
+      }else if(val === '2'){
+        this.form.jk_wali = 'P'
+        this.form.nama_wali = this.form.nama_ibu
+        this.form.nik_wali = this.form.nik_ibu
+        this.form.tempat_lahir_wali = this.form.nik_ibu
+        this.form.tanggal_lahir_wali = this.form.nik_ibu
+        this.form.pekerjaan_wali = this.form.nik_ibu
+        this.form.tempat_lahir_wali = this.form.nik_ibu
+      }
+
+
+    }
   },
   mounted() {
     if (!Object.entries(this.form).length) {
