@@ -113,20 +113,15 @@ export default {
           password: this.password,
         })
         .then((res) => {
-          // console.log(res);
           if (res.status) {
             const userData = this.tokenParser(res.token);
-            // this.$store
-            //   .dispatch("pendaftar/getPendaftar", userData.id_user)
-            //   .then((res2) => {
-            //     if(Object.entries(res2).length){
-                    this.$router.push(`/pendaftar/${userData.id_user}`);
-
-            //     }
-            //   });
+            this.$router.push(`/pendaftar/${userData.id_user}`);
           }
+
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          this.$store.commit("SET_ERROR", err, { root: true });
+        })
         .finally(() => {
           this.$store.commit("SET_LOADING", false, { root: true });
         });
