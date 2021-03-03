@@ -37,9 +37,9 @@ const mutations = {
     SET_STATUS_KUISIONER(state, payload) {
         state.person['kuisioner'] = payload
     },
-    SET_PENDAFTARAN(state, payload){
-        state.pendaftaran = payload
-    }
+    // SET_PENDAFTARAN(state, payload){
+    //     state.pendaftaran = payload
+    // }
 }
 const actions = {
     getPendaftar({ commit }, uid) {
