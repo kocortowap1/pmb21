@@ -2,13 +2,19 @@ import { getPrivateData } from '../../helper/api'
 import mapField from '../../helper/_mapfield'
 const state = {
     person: {},
+    pendaftaran: [],
+    pembayaran : [],
+    berkas: [],
+    seleksi: [],
+
 }
 const mutations = {
     SET_PERSON(state, payload) {
         state.person = payload
     },
-    SET_PENDAFTARAN(state, payload, index) {
-        state.person['pendaftaran'][index] = payload
+    SET_PENDAFTARAN(state, payload) {
+        // state.person['pendaftaran'].u = payload
+        state.pendaftaran.unshift(payload)
     },
     ADD_PENDAFTARAN(state, payload) {
         state.person['pendaftaran'].push(payload)
@@ -30,6 +36,9 @@ const mutations = {
     },
     SET_STATUS_KUISIONER(state, payload) {
         state.person['kuisioner'] = payload
+    },
+    SET_PENDAFTARAN(state, payload){
+        state.pendaftaran = payload
     }
 }
 const actions = {
@@ -37,10 +46,23 @@ const actions = {
         return new Promise((resolve, reject) => {
             getPrivateData(`/person/${uid}`).then(res => {
                 if (res.status) {
-                    commit('SET_PERSON', res.data)
+                    const person = getPersonOnly(res.data)
+                    commit('SET_PERSON', person)
 
                     resolve(res.data)
                 } else {
+                    reject()
+                }
+            })
+        })
+    },
+    getDataPendaftaran({commit},uidPendaftaran){
+        return new Promise((resolve, reject) => {
+            getPrivateData(`/pendaftar/${uidPendaftaran}`).then(res => {
+                if(res.status){
+                    commit('SET_PENDAFTARAN', res.data)
+                    resolve(res)
+                }else{
                     reject()
                 }
             })
@@ -57,6 +79,13 @@ const getters = {
             }
         }
         return newObj
+    },
+    currentPendaftaran : (state) => {
+        if(!state.pendaftaran.length){
+            return {}
+        }else{
+            return state.pendaftaran[0]
+        }
     },
     biodataKosong: (state) => {
         const keyCheck = mapField.dataDiri
@@ -79,6 +108,15 @@ const getters = {
         return hasil
     },
 
+}
+const getPersonOnly = (response) => {
+    let newObj = {}
+    for (const key in response) {
+        if(typeof response[key] !== 'object' || response[key] === null){
+            newObj[key] = response[key]
+        }
+    }
+    return newObj
 }
 
 export default {

@@ -14,10 +14,10 @@ const mutations = {
     }
 }
 const actions = {
-    getToken({ commit }, { email, password }) {
+    getToken({ commit }, { email, password, GToken }) {
         return new Promise((resolve, reject) => {
             try {
-                login(email, password).then(res => {
+                login(email, password, GToken).then(res => {
                     if (res.status) {
                         commit('SET_TOKEN', res.token)
                         setAuthorization(res.token)
@@ -45,11 +45,11 @@ const actions = {
         })
 
     },
-    registrasi({ commit }, data) {
+    registrasi({ commit }, {data, header}) {
         return new Promise((resolve, reject) => {
-            postPublicData(`/register`, data).then(res => {
+            postPublicData(`/register`, data, header).then(res => {
                 if (res.status) {
-                    commit('SET_REGISTRASI', data)
+                    commit('SET_REGISTRASI', data.person)
                     resolve(res)
                 } else {
                     const err = { isError: true, errorMessage: res.message }

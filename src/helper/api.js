@@ -27,7 +27,7 @@ const isActiveSession = (token) => {
 }
 
 
-const login = async (email, password) => {
+const login = async (email, password, GToken) => {
     let response = { status: false }
     if (!email) {
         response['message'] = 'Email tidak boleh kosong'
@@ -35,7 +35,7 @@ const login = async (email, password) => {
     if (!password) {
         response['message'] = 'Password tidak boleh kosong'
     }
-    const req = await axios.post('/register/login', { email: email, password: password })
+    const req = await axios.post('/register/login', { email: email, password: password }, {headers : {'x-recaptcha' : GToken}})
     if (req.status === 200 && req.headers['x-token']) {
         // setAuthorization(req.headers['x-token'])
         response.status = true
@@ -66,12 +66,13 @@ const getPublicData = async (url) => {
     }
     return response
 }
-const postPublicData = async (url, data) => {
+const postPublicData = async (url, data, customHeader = {}) => {
     let response = { status: false }
     try {
         const req = await axios.post(url, data, {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                ...customHeader
             }
         })
         if (!req.data.status) {

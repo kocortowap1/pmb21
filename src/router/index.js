@@ -36,23 +36,27 @@ const routes = [
       },
       {
         path: 'formulir',
-        component: () => import(/* webpackChunkName: "Formulir" */ '../components/pendaftar/formulir.vue')
+        component: () => import(/* webpackChunkName: "formulir" */ '../components/pendaftar/formulir.vue')
       },
       {
         path: 'kuisioner',
-        component: () => import(/* webpackChunkName: "Formulir" */ '../components/pendaftar/kuisioner.vue')
+        component: () => import(/* webpackChunkName: "kuisioner" */ '../components/pendaftar/kuisioner.vue')
       },
       {
         path: 'pembayaran',
-        component: () => import(/* webpackChunkName: "Formulir" */ '../components/pendaftar/pembayaran.vue')
+        component: () => import(/* webpackChunkName: "pembayaran" */ '../components/pendaftar/pembayaran.vue')
       },
       {
         path: 'berkas',
-        component: () => import(/* webpackChunkName: "Formulir" */ '../components/pendaftar/berkas.vue')
+        component: () => import(/* webpackChunkName: "berkas" */ '../components/pendaftar/berkas.vue')
       },
       {
         path: 'seleksi',
-        component: () => import(/* webpackChunkName: "Formulir" */ '../components/pendaftar/seleksi.vue')
+        component: () => import(/* webpackChunkName: "seleksi" */ '../components/pendaftar/seleksi.vue')
+      },
+      {
+        path : 'pendaftaran',
+        component: () => import(/* webpackChunkName: "pendaftaran" */ '../components/pendaftar/pendaftaran.vue')
       }
     ]
   },
