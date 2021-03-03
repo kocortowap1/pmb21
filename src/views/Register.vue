@@ -105,6 +105,7 @@
                             v-model="confirm"
                             class="form-control"
                             placeholder="Password"
+                            @keypress.enter="activeStep++"
                           />
                           <div class="input-group-append">
                             <button
@@ -281,13 +282,23 @@
           </b-card>
         </b-col>
       </b-row>
+      <!-- <b-modal
+        ref="modal-info"
+        ok-only
+        header-text-variant="white"
+        @hidden="onHiddenModal"
+        :headerBgVariant="modal.headerType"
+      >
+        <template #modal-title> {{ modal.title }} </template>
+        <div class="d-block">
+          <h6>{{ modal.content }}</h6>
+        </div>
+      </b-modal> -->
     </b-container>
   </div>
 </template>
 
 <script>
-import tanggalIndo from "../helper/date";
-import { ValidationProvider, ValidationObserver } from "vee-validate";
 import {
   BContainer,
   BRow,
@@ -302,7 +313,14 @@ import {
   BIcon,
   BIconEye,
   BIconSlash,
+  BButton,
 } from "bootstrap-vue";
+import Vue from "vue";
+import { VueReCaptcha } from "vue-recaptcha-v3";
+Vue.use(VueReCaptcha, { siteKey: "6LeaVG8aAAAAANZCXDIJ6otJrrD0Mf3N42hgW4BI" });
+import tanggalIndo from "../helper/date";
+import { ValidationProvider, ValidationObserver } from "vee-validate";
+
 require("../helper/_validationRules");
 
 export default {
@@ -323,6 +341,7 @@ export default {
     BIcon,
     BIconEye,
     BIconSlash,
+    BButton,
   },
 
   data() {
@@ -338,6 +357,12 @@ export default {
       confirm: "",
       // person: {},
       activeStep: 0,
+      modal: {
+        title: null,
+        content: null,
+        headerType: null,
+        actionAfter: false,
+      },
     };
   },
   methods: {
@@ -355,34 +380,76 @@ export default {
       this.passwordType = this.passwordType == "password" ? "text" : "password";
       this.passwordIcon = this.passwordIcon == "eye" ? "eye-slash" : "eye";
     },
+    onHiddenModal() {
+      if (this.modal.actionAfter) {
+        // this.$refs.observeForm.reset();
+        this.$router.push(`/login?email=${this.person.email}`);
+      } else {
+        return false;
+      }
+    },
+    async registrasi() {
+      // let response = {}
+      await this.$recaptchaLoaded();
 
-    registrasi() {
+      const GResponse = await this.$recaptcha("login");
       let data = this.person;
-      data["tanggal_lahir"] = this.tanggalLahir;
-      this.$store
-        .dispatch("auth/registrasi", { person: data })
-        .then((res) => {
-          console.log(res);
-          this.createModal(
+      const request = await this.$store.dispatch("auth/registrasi", {
+        data: { person: data },
+        header: { ["x-recaptcha"]: GResponse },
+      });
+      if (request.status) {
+        await this.createModal(
             "Sukses",
-            "success",
-            "Pendaftaran berhasil dilakukan, silakan login untuk melengkapi data"
-          )
-            .then(() => {
-              this.$nextTick(() => {
-                this.resetForm();
-              });
+          "success",
+          "Pendaftaran berhasil dilakukan, silakan login untuk melengkapi data"
+        )
+
+            await this.resetForm();
+            setTimeout(() => {
               this.$router.push(`/login?email=${this.person.email}`);
-            })
-            .catch(() => {
-              return false;
-            });
-        })
-        .catch((err) => {
-          this.createModal("Gagal!!", "danger", err.errorMessage).then(() => {
+            }, 2000);
             return false;
-          });
+        // this.modal.headerType = "success";
+        // this.modal.title = "Pendaftaran Sukses !!";
+        // this.modal.content =
+        //   "Pendaftaran berhasil. Selanjutnya silakan login untuk melengkapi data";
+        // this.modal.actionAfter = true;
+      } else {
+        this.createModal("Gagal!!", "danger", request.errMessage).then(() => {
+          return false;
         });
+        // this.modal.headerType = "danger";
+        // this.modal.title = "Pendaftaran Gagal !!";
+        // this.modal.content = "Pendaftaran Gagal. " + request.errMessage;
+        // this.modal.actionAfter = true
+      }
+      // this.$refs["modal-info"].show();
+      // data["tanggal_lahir"] = this.tanggalLahir;
+      // this.$store
+      //   .dispatch("auth/registrasi", { person: data })
+      //   .then((res) => {
+      //     console.log(res);
+      //     this.createModal(
+      //       "Sukses",
+      //       "success",
+      //       "Pendaftaran berhasil dilakukan, silakan login untuk melengkapi data"
+      //     )
+      //       .then(() => {
+      //         this.$nextTick(() => {
+      //           this.resetForm();
+      //         });
+      //         this.$router.push(`/login?email=${this.person.email}`);
+      //       })
+      //       .catch(() => {
+      //         return false;
+      //       });
+      //   })
+      //   .catch((err) => {
+      //     this.createModal("Gagal!!", "danger", err.errorMessage).then(() => {
+      //       return false;
+      //     });
+      //   });
     },
     resetForm() {
       // Object.keys(this.person).forEach((x) => (this.person[x] = ""));
@@ -390,6 +457,9 @@ export default {
       this.confirm = "";
       this.$refs.observeForm.reset();
       this.activeStep = 0;
+    },
+    showModal() {
+      this.$refs["modal-info"].show();
     },
     createModal(title, type, content) {
       const option = {
@@ -483,6 +553,9 @@ export default {
     }
     this.getNamaBulan();
   },
+  // created(){
+  //   this.$refs['modal-info'].show()
+  // },
   watch: {
     bulanlahir: {
       handler: function (val) {
@@ -491,42 +564,6 @@ export default {
         }
       },
     },
-  },
-  metaInfo: {
-    title: "Buat Akun",
-    titleTemplate: "%s PMB UNUJA",
-    meta: [
-      {
-        name: "description",
-        content:
-          "Formulir Pembuatan Akun Sistem Informasi Penerimaan Mahasiswa Baru (SIMPMB) Universitas Nurul Jadid Probolinggo Jawa Timur",
-      },
-      {
-        property: "og:description",
-        content:
-          "Formulir Pembuatan Akun Sistem Informasi PPenerimaan Mahasiswa Baru (SIMPMB) Universitas Nurul Jadid Probolinggo Jawa Timur",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://pmb.unuja.ac.id/register" },
-      { itemprop: "name", content: "Buat Akun  PMB Universitas Nurul Jadid" },
-      {
-        itemprop: "description",
-        content:
-          "Buat Akun Sistem Informasi Penerimaan Mahasiswa Baru (SIMPMB) Universitas Nurul Jadid Probolinggo Jawa Timur",
-      },
-      //twitter
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "https://pmb.unuja.ac.id/register" },
-      { name: "twitter:title", content: "PMB Universitas Nurul Jadid" },
-      {
-        name: "twitter:description",
-        content:
-          "Formulir Pembuatan Akun Sistem Informasi Penerimaan Mahasiswa Baru (SIMPMB) Universitas Nurul Jadid Probolinggo Jawa Timur",
-      },
-      // Your twitter handle, if you have one.
-      { name: "twitter:creator", content: "@unujaofficial" },
-    ],
-    link: [{ rel: "canonical", href: "https://pmb.unuja.ac.id/register" }],
   },
 };
 </script>
