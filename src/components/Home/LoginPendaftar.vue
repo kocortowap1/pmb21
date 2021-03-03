@@ -70,7 +70,10 @@
                       >
                     </div>
                   </form>
-                  <p class="text-danger" v-show="isError">{{ errorMessage }}</p>
+                  <!-- <p class="alert alert-danger" v-show="isError">{{ errorMessage }}</p> -->
+                  <b-alert variant="danger" dismissible :show="isError">{{
+                    errorMessage
+                  }}</b-alert>
                 </ValidationObserver>
               </div>
               <div class="card-footer text-center">
@@ -87,12 +90,17 @@
 
 <script>
 import { ValidationObserver, ValidationProvider } from "vee-validate";
+import { BAlert } from "bootstrap-vue";
 require("../../helper/_validationRules");
+import Vue from "vue";
+import { VueReCaptcha } from "vue-recaptcha-v3";
+Vue.use(VueReCaptcha, { siteKey: "6LeaVG8aAAAAANZCXDIJ6otJrrD0Mf3N42hgW4BI" });
 export default {
   name: "loginPendaftar",
   components: {
     ValidationObserver,
     ValidationProvider,
+    BAlert,
   },
   data() {
     return {
@@ -102,22 +110,23 @@ export default {
     };
   },
   methods: {
-    login() {
+    async login() {
+      await this.$recaptchaLoaded();
       this.isSubmiting = true;
 
       this.$store.commit("SET_LOADING", true, { root: true });
-
-      this.$store
+ const GResponse = await this.$recaptcha("login");
+      await this.$store
         .dispatch("auth/getToken", {
           email: this.email,
           password: this.password,
+          GToken : GResponse
         })
         .then((res) => {
           if (res.status) {
             const userData = this.tokenParser(res.token);
             this.$router.push(`/pendaftar/${userData.id_user}`);
           }
-
         })
         .catch((err) => {
           this.$store.commit("SET_ERROR", err, { root: true });
