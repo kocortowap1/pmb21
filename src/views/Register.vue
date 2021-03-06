@@ -313,7 +313,7 @@ import {
   BIcon,
   BIconEye,
   BIconSlash,
-  BButton,
+  // BButton,s
 } from "bootstrap-vue";
 import Vue from "vue";
 import { VueReCaptcha } from "vue-recaptcha-v3";
@@ -341,7 +341,7 @@ export default {
     BIcon,
     BIconEye,
     BIconSlash,
-    BButton,
+    // BButton,
   },
 
   data() {
@@ -392,8 +392,9 @@ export default {
       // let response = {}
       await this.$recaptchaLoaded();
 
-      const GResponse = await this.$recaptcha("login");
+      const GResponse = await this.$recaptcha("register");
       let data = this.person;
+      data['tanggal_lahir'] = this.tanggalLahir
       const request = await this.$store.dispatch("auth/registrasi", {
         data: { person: data },
         header: { ["x-recaptcha"]: GResponse },
