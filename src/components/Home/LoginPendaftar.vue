@@ -115,25 +115,34 @@ export default {
       this.isSubmiting = true;
 
       this.$store.commit("SET_LOADING", true, { root: true });
- const GResponse = await this.$recaptcha("login");
-      await this.$store
-        .dispatch("auth/getToken", {
-          email: this.email,
-          password: this.password,
-          GToken : GResponse
-        })
-        .then((res) => {
-          if (res.status) {
-            const userData = this.tokenParser(res.token);
-            this.$router.push(`/pendaftar/${userData.id_user}`);
-          }
-        })
-        .catch((err) => {
-          this.$store.commit("SET_ERROR", err, { root: true });
-        })
-        .finally(() => {
-          this.$store.commit("SET_LOADING", false, { root: true });
-        });
+      const GResponse = await this.$recaptcha("login");
+      const dispatchLogin = await this.$store.dispatch("auth/getToken", {
+        email: this.email,
+        password: this.password,
+        GToken: GResponse,
+      });
+      console.log(dispatchLogin);
+      if (dispatchLogin.status) {
+        const userData = this.tokenParser(dispatchLogin.token);
+        this.$router.push(`/pendaftar/${userData.id_user}`);
+      } else {
+        this.$store.commit("SET_ERROR", dispatchLogin.message, { root: true });
+      }
+      setTimeout(() => {
+        this.$store.commit("SET_LOADING", false, { root: true });
+      }, 1000);
+      // .then((res) => {
+      //   if (res.status) {
+      //     const userData = this.tokenParser(res.token);
+      //     this.$router.push(`/pendaftar/${userData.id_user}`);
+      //   }
+      // })
+      // .catch((err) => {
+      //   this.$store.commit("SET_ERROR", err, { root: true });
+      // })
+      // .finally(() => {
+      //   this.$store.commit("SET_LOADING", false, { root: true });
+      // });
       // .then(() => {
       // });
     },
@@ -173,47 +182,9 @@ export default {
       this.email = this.$route.query.email;
     }
   },
-  // metaInfo: {
-  //   title: "Login Pendaftar",
-  //   titleTemplate: "%s PMB UNUJA",
-  //   meta: [
-  //     {
-  //       name: "description",
-  //       content:
-  //         "Sistem Informasi Penerimaan Mahasiswa Baru (SIMPMB) Universitas Nurul Jadid Probolinggo Jawa Timur"
-  //     },
-  //     {
-  //       property: "og:description",
-  //       content:
-  //         "Sistem Informasi Penerimaan Mahasiswa Baru (SIMPMB) Universitas Nurul Jadid Probolinggo Jawa Timur"
-  //     },
-  //     { property: "og:type", content: "website" },
-  //     { property: "og:url", content: "https://pmb.unuja.ac.id/login" },
-  //     {
-  //       property: "og:image",
-  //       content: "https://pmb.unuja.ac.id/img/thumb.jpg"
-  //     },
-
-  //     { itemprop: "name", content: "PMB Universitas Nurul Jadid" },
-  //     {
-  //       itemprop: "description",
-  //       content:
-  //         "Sistem Informasi Penerimaan Mahasiswa Baru (SIMPMB) Universitas Nurul Jadid Probolinggo Jawa Timur"
-  //     },
-  //     //twitter
-  //     { name: "twitter:card", content: "summary" },
-  //     { name: "twitter:site", content: "https://pmb.unuja.ac.id/login" },
-  //     { name: "twitter:title", content: "PMB Universitas Nurul Jadid" },
-  //     {
-  //       name: "twitter:description",
-  //       content:
-  //         "Sistem Informasi Penerimaan Mahasiswa Baru (SIMPMB) Universitas Nurul Jadid Probolinggo Jawa Timur"
-  //     },
-  //     // Your twitter handle, if you have one.
-  //     { name: "twitter:creator", content: "@unujaofficial" }
-  //   ],
-  //   link: [{ rel: "canonical", href: "https://pmb.unuja.ac.id/login" }]
-  // }
+  beforeDestroy() {
+    this.$store.commit("SET_ERROR", "", { root: true });
+  },
 };
 </script>
 
