@@ -408,7 +408,7 @@ export default {
 
             await this.resetForm();
             setTimeout(() => {
-              this.$router.push(`/login?email=${this.person.email}`);
+              this.$router.push(`/login?email=${request.person.email}`);
             }, 2000);
             return false;
         // this.modal.headerType = "success";
