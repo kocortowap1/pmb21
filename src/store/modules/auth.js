@@ -40,6 +40,7 @@ const actions = {
         return new Promise((resolve) => {
             removeAuthorization()
             commit('SET_TOKEN', '')
+            commit('pendaftar/RESET_ALL_STATE', null, {root: true})
             localStorage.removeItem('b')
             resolve()
         })
