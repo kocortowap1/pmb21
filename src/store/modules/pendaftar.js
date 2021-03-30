@@ -3,9 +3,10 @@ import mapField from '../../helper/_mapfield'
 const state = {
     person: {},
     pendaftaran: [],
-    pembayaran : [],
+    pembayaran: [],
     berkas: [],
     seleksi: [],
+
 
 }
 const mutations = {
@@ -13,33 +14,41 @@ const mutations = {
         state.person = payload
     },
     SET_PENDAFTARAN(state, payload) {
-        // state.person['pendaftaran'].u = payload
-        state.pendaftaran.unshift(payload)
+        state.pendaftaran = payload
+        // state.pendaftaran.unshift(payload)
     },
     ADD_PENDAFTARAN(state, payload) {
-        state.person['pendaftaran'].push(payload)
+        state.pendaftaran.unshift(payload)
     },
     ADD_BERKAS(state, payload) {
-        state.person['berkas'].push(payload)
+        state.berkas.push(payload)
     },
-    SET_BERKAS(state, payload, index) {
-        state.person['berkas'][index] = payload
+    SET_BERKAS(state, payload) {
+        state.berkas = payload
     },
-    ADD_PEMBAYARAN(state, payload) {
-        state.person['pembayaran'].push(payload)
-    },
-    SET_PEMBAYARAN(state, payload, index) {
-        state.person['pembayaran'][index] = payload
+    // ADD_PEMBAYARAN(state, payload) {
+    //     state.pembayaran.push(payload)
+    // },
+    SET_PEMBAYARAN(state, payload) {
+        state.pembayaran = payload
     },
     SET_SELEKSI(state, payload) {
-        state.person['seleksi'] = payload
+        state.seleksi = payload
     },
     SET_STATUS_KUISIONER(state, payload) {
         state.person['kuisioner'] = payload
     },
-    // SET_PENDAFTARAN(state, payload){
-    //     state.pendaftaran = payload
-    // }
+    UPDATE_PENDAFTARAN(state, payload){
+        state.pendaftaran[payload['index']] = payload['data']
+    },
+    RESET_ALL_STATE(state, payload){
+        state.person = payload || {}
+        state.pendaftaran = payload || []
+        state.berkas = payload || []
+        state.pembayaran = payload || []
+        state.seleksi = payload || []
+    }
+
 }
 const actions = {
     getPendaftar({ commit }, uid) {
@@ -47,8 +56,14 @@ const actions = {
             getPrivateData(`/person/${uid}`).then(res => {
                 if (res.status) {
                     const person = getPersonOnly(res.data)
-                    commit('SET_PERSON', person)
+                    const pendaftaran = res.data.pendaftaran || []
+                    const berkas = res.data.berkas || []
+                    const pembayaran = res.data.pembayarn || []
 
+                    commit('SET_PERSON', person)
+                    commit('SET_PENDAFTARAN', pendaftaran)
+                    commit('SET_BERKAS', berkas)
+                    commit('SET_PEMBAYARAN', pembayaran)
                     resolve(res.data)
                 } else {
                     reject()
@@ -56,35 +71,55 @@ const actions = {
             })
         })
     },
-    getDataPendaftaran({commit},uidPendaftaran){
+    getDataPendaftaran({ commit }, uidPendaftaran) {
         return new Promise((resolve, reject) => {
             getPrivateData(`/pendaftar/${uidPendaftaran}`).then(res => {
-                if(res.status){
+                if (res.status) {
                     commit('SET_PENDAFTARAN', res.data)
                     resolve(res)
-                }else{
+                } else {
                     reject()
                 }
             })
         })
-    }
+    },
+
+
 }
 const getters = {
     // pendaftar : state => state.person,
-    personData : (state) =>{
+    personData: (state) => {
         let newObj = {}
         for (const key in state.person) {
-            if(typeof state.person[key] !== 'object' || state.person[key] === null){
+            if (typeof state.person[key] !== 'object' || state.person[key] === null) {
                 newObj[key] = state.person[key]
             }
         }
         return newObj
     },
-    currentPendaftaran : (state) => {
-        if(!state.pendaftaran.length){
+    currentGelombang: (state, getters, rootState) => {
+        if (!state.pendaftaran.length) {
             return {}
+        } else {
+            const listGelombang = rootState.gelombang.gelombang
+            return listGelombang.find(k => { return new Date() > new Date(k.tanggal_mulai) && new Date <= new Date(k.tanggal_selesai) })
+            // return listGelombang[0]
+        }
+    },
+    currentPendaftaran (state, getters){
+        if(state.pendaftaran.length){
+            const pendaftaran  = state.pendaftaran.find(k => k.id_gelombang === getters.currentGelombang.id_gelombang)
+            return pendaftaran
         }else{
-            return state.pendaftaran[0]
+            return {}
+        }
+    },
+    pendaftaranIndex(state, getters){
+        if(state.pendaftaran.length){
+            const pendaftaran  = state.pendaftaran.findIndex(k => k.id_gelombang === getters.currentGelombang.id_gelombang)
+            return pendaftaran
+        }else{
+            return 0
         }
     },
     biodataKosong: (state) => {
@@ -112,7 +147,7 @@ const getters = {
 const getPersonOnly = (response) => {
     let newObj = {}
     for (const key in response) {
-        if(typeof response[key] !== 'object' || response[key] === null){
+        if (typeof response[key] !== 'object' || response[key] === null) {
             newObj[key] = response[key]
         }
     }
