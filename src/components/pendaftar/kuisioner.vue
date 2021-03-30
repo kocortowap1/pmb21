@@ -1,5 +1,5 @@
 <template>
-  <div class="kuisioner">
+  <div class="kuisioner container">
     <div class="card">
       <div class="card-header">
         <h5 class="card-title">Kuisioner</h5>
@@ -204,6 +204,9 @@ export default {
       }
     }
   },
+  mounted(){
+    this.getStatusKuisioner()
+  }
 };
 </script>
 

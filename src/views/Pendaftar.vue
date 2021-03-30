@@ -1,49 +1,55 @@
 <template>
-  <div class="pendaftar">
-    <ul class="desktop-menu d-none d-sm-flex justify-content-sm-start justify-content-md-center">
+  <div class="pendaftar" style="background-color: #f2f2f3">
+    <ul
+      class="desktop-menu d-none d-sm-flex justify-content-sm-start justify-content-md-center"
+    >
       <li class="text-center">
         <router-link :to="`/pendaftar/${$route.params.id}`">
-          <b-icon icon="calendar-4-range" scale="2"></b-icon>
+          <b-icon-calendar-4-range scale="2"></b-icon-calendar-4-range>
           <p>Beranda</p>
         </router-link>
       </li>
       <li class="text-center">
+        <router-link :to="`/pendaftar/${$route.params.id}/pendaftaran`">
+          <b-icon-card-list scale="2"></b-icon-card-list>
+          <p>Pendaftaran</p>
+        </router-link>
+      </li>
+      <li class="text-center">
         <router-link :to="`/pendaftar/${$route.params.id}/formulir`">
-          <b-icon icon="journal-bookmark-fill" scale="2"></b-icon>
+          <b-icon-journal-bookmark-fill
+            scale="2"
+          ></b-icon-journal-bookmark-fill>
           <p>Formulir</p>
         </router-link>
       </li>
       <li class="text-center">
         <router-link :to="`/pendaftar/${$route.params.id}/kuisioner`">
-          <b-icon icon="ui-checks" scale="2"></b-icon>
+          <b-icon-ui-checks scale="2"></b-icon-ui-checks>
           <p>Kuisioner</p>
         </router-link>
       </li>
       <li class="text-center">
         <router-link :to="`/pendaftar/${$route.params.id}/pembayaran`">
-          <b-icon icon="credit-card-fill" scale="2"></b-icon>
+          <b-icon-credit-card-fill scale="2"></b-icon-credit-card-fill>
           <p>Pembayaran</p>
         </router-link>
       </li>
       <li class="text-center">
         <router-link :to="`/pendaftar/${$route.params.id}/berkas`">
-          <b-icon icon="cloud-upload-fill" scale="2"></b-icon>
+          <b-icon-cloud-upload-fill scale="2"></b-icon-cloud-upload-fill>
           <p>Berkas</p>
         </router-link>
       </li>
       <li class="text-center">
         <router-link :to="`/pendaftar/${$route.params.id}/seleksi`">
-          <b-icon icon="person-check-fill" scale="2"></b-icon>
+          <b-icon-person-check-fill scale="2"></b-icon-person-check-fill>
           <p>Seleksi</p>
         </router-link>
       </li>
     </ul>
 
     <b-container class="mt-2" fluid>
-      <b-alert :show="showHello">
-        <h4>Selamat Datang {{ userData.nama }}</h4>
-        Di Sistem Informasi Penerimaan Mahasiswa Baru Universitas Nurul Jadid
-      </b-alert>
       <router-view></router-view>
     </b-container>
   </div>
@@ -52,7 +58,6 @@
 <script>
 import {
   BContainer,
-  BAlert,
   BIcon,
   BIconCloudUploadFill,
   BIconPersonCheckFill,
@@ -61,14 +66,14 @@ import {
   BIconFilePersonFill,
   BIconSpeakerFill,
   BIconJournalBookmarkFill,
-  BIconCalendar4Range
+  BIconCalendar4Range,
+  BIconCardList,
 } from "bootstrap-vue";
 import { mapGetters } from "vuex";
 export default {
   name: "Pendaftar",
   components: {
     BContainer,
-    BAlert,
     BIcon,
     BIconCloudUploadFill,
     BIconPersonCheckFill,
@@ -77,28 +82,39 @@ export default {
     BIconFilePersonFill,
     BIconSpeakerFill,
     BIconJournalBookmarkFill,
-    BIconCalendar4Range
+    BIconCalendar4Range,
+    BIconCardList,
   },
   data() {
     return {
-      showHello: true,
+      // showHello: true,
     };
   },
+
   computed: {
     ...mapGetters({
       userData: "auth/userData",
     }),
+    gelombang() {
+      return this.$store.state.gelombang.gelombang || [];
+    },
+    tahunAkademik() {
+      return this.$store.state.gelombang.tahunAkademik || {};
+    },
   },
-  created() {
-    setTimeout(() => {
-      this.showHello = false;
-    }, 5000);
+  mounted() {
+    if (!this.gelombang.length) {
+      this.$store.dispatch("gelombang/getTahunAkademikAktif").then((res) => {
+        this.$store.dispatch("gelombang/getGelombang", res.id_tahun_akademik);
+      });
+    }
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .pendaftar {
+  min-height: 100vh;
   ul.desktop-menu {
     list-style: none;
     background-color: #f2f2f3;
@@ -107,9 +123,9 @@ export default {
     padding: 0;
     overflow-x: auto;
     li {
-      padding: .6em 1em;
+      padding: 0.6em 1em;
       .b-icon {
-    // justify-content: center;
+        // justify-content: center;
         // display: inline-block;
         margin: 16px 0 8px 0;
       }
@@ -119,5 +135,8 @@ export default {
 
   .container-fluid {
   }
+}
+.recaptcha-badge {
+  display: none !important;
 }
 </style>

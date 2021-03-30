@@ -64,7 +64,6 @@
                       v-model="form.id_jenjang_pendidikan"
                       class="col-sm-8 col-md-7"
                       :state="errors[0] ? false : valid ? true : null"
-                      @input="filterJalur($event)"
                     >
                       <b-form-select-option :value="null"
                         >Pilih Jenjang Pendidikan</b-form-select-option
@@ -340,33 +339,46 @@
     <b-modal ref="search-modal" size="lg" ok-only>
       <template #modal-title> Detail Asal Sekolah/Perguruan Tinggi </template>
       <div class="d-block">
-        <div class="alert alert-info" v-if="!cariSekolah">
-          Daftar sekolah di bawah ini adalah Asal Sekolah/PT yang sering dipilih
-          oleh calon mahasiswa baru. Anda dapat melakukan pencarian jika Asal Sekolah anda tidak tercantum dalam list berikut
+        <div class="table-responsive">
+          <table class="table table-sm table-bordered">
+            <thead>
+              <tr>
+                <td>
+                  <input
+                    type="checkbox"
+                    name="select-all"
+                    class="form-checkbox"
+                  />
+                </td>
+                <th>NPSN</th>
+                <th>Nama Sekolah</th>
+                <th>Kecamatan</th>
+                <th>Kabupaten</th>
+                <th>Provinsi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="!listSekolah.length">
+                <td colspan="5">Data sekolah tidak ditemukan</td>
+              </tr>
+              <tr v-else v-for="l in listSekolah" :key="l.id_asal_sekolah">
+                <td>
+                  <input
+                    type="checkbox"
+                    name="idsekolah"
+                    :value="l.id_asal_sekolah"
+                    @click="onSelectSekolah(l)"
+                  />
+                </td>
+                <td>{{ l.npsn }}</td>
+                <td>{{ l.nama_sekolah }}</td>
+                <td>{{ l.kec }}</td>
+                <td>{{ l.kab }}</td>
+                <td>{{ l.prop }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="d-flex justify-content-between">
-          <div>
-            Filter
-          </div>
-          <div>
-            <b-form-input class="mb-1" placeholder="Cari Sekolah" @input="pencarianSekolah($event)"></b-form-input>
-          </div>
-        </div>
-
-        <b-table small sticky-header :items="listSekolah" :fields="listSekolahField" >
-          <template #cell(id_asal_sekolah)="data">
-            <input
-              type="checkbox"
-              name="idsekolah"
-              :value="data.item.id_asal_sekolah"
-              @click="onSelectSekolah(data.item)"
-            />
-          </template>
-          <template #cell(kec)="data">
-            {{data.item.kec}} {{data.item.kab}} {{data.item.prop}}
-          </template>
-        </b-table>
-
       </div>
     </b-modal>
   </b-container>
@@ -388,7 +400,6 @@ import {
   BFormInput,
   BCard,
   BCardTitle,
-  BTable,
   // BFormInvalidFeedback,
   BIcon,
   BIconSearch,
@@ -423,35 +434,26 @@ export default {
     BCardTitle,
 
     BIconSearch,
-    BTable,
   },
   data() {
     return {
       listSekolah: [],
-      listSekolahField: [
-        { key: "id_asal_sekolah", label: "#" },
-        { key: "nama_sekolah", label: "Asal Sekolah" },
-        { key: "kec", label: "Alamat" },
-      ],
       listTahunLulus: [],
       listJurusan: [],
       listJalur: [],
       form: {},
-      listMostSekolah: [],
-      cariSekolah: ''
     };
   },
   methods: {
+
     async simpanPendaftaran() {
       try {
-        const simpan = await postPrivateData(
-          `/pendaftar/${this.userData.id_person}`,
-          this.form
+        const simpan = await postPrivateData(`/pendaftar/${this.userData.id_person}`,this.form,
         )
           .then((res) => res)
           .catch((err) => err);
         if (simpan.data.status) {
-          this.$store.commit("pendaftar/ADD_PENDAFTARAN", simpan.data.data);
+          this.$store.commit('pendaftar/ADD_PENDAFTARAN',simpan.data.data)
           alert("Pilihan jalur dan prodi berhasil disimpan");
         } else {
           alert(simpan.data.message);
@@ -478,28 +480,18 @@ export default {
     handleSimpan() {
       if (this.form.uid_pendaftar) {
         this.updatePendaftaran();
-      } else {
+        } else {
         this.simpanPendaftaran();
       }
     },
     showModal() {
       this.$refs["search-modal"].show();
     },
-    pencarianSekolah(e){
-      if(e.length % 3 === 2){
-        getPrivateData(`/asal-sekolah?cari=${e}`).then(res => {
-          if(res.status){
-            this.listSekolah = res.data
-          }
-        })
-      }
-    },
     getMostSekolah() {
       getPrivateData(`/asal-sekolah/most`).then((res) => {
         if (res.status) {
           // console.log(res)
           this.listSekolah = res.data;
-          this.listMostSekolah = res.data
         }
       });
     },
@@ -511,6 +503,7 @@ export default {
       });
     },
     getJurusan() {
+      console.log(this.selectedSekolah)
       getPrivateData(
         `/jurusan-sekolah?id_jenis=${this.selectedSekolah.id_jenis}`
       ).then((res) => {
@@ -527,12 +520,11 @@ export default {
       // this.getJurusan();
       this.$refs["search-modal"].hide();
     },
-    filterJalur(val) {
-      // console.log(`filter => ${typeof val}`)
+    filterJalur() {
       const jalur = this.$store.state.prodi.listJalur;
       this.listJalur = jalur.filter(
         (k) =>
-          k.id_jenjang_pendidikan === val
+          k.id_jenjang_pendidikan === parseInt(this.form.id_jenjang_pendidikan)
       );
     },
     initPendaftaran() {
@@ -639,7 +631,7 @@ export default {
           const sek = this.listSekolah.find(
             (k) => k.id_asal_sekolah === this.form.id_asal_sekolah
           );
-          return `${sek.nama_sekolah} ${sek.kec} ${sek.kab} [${sek.npsn}]`;
+          return `[${sek.npsn}] ${sek.nama_sekolah} ${sek.kec} ${sek.kab}`;
         } else {
           return "";
         }
@@ -676,25 +668,13 @@ export default {
     },
     "form.id_jenjang_pendidikan": {
       handler: function (val, oldVal) {
-        console.log(`idjp : ${oldVal} => ${val}`)
-        console.log(this.$store.state.prodi.listJalur)
         if (val !== oldVal) {
-          // this.filterJalur(val);
-          const jalur = this.$store.state.prodi.listJalur
-          this.listJalur = jalur.filter(j => j.id_jenjang_pendidikan == val)
-        } else {
-          this.listJalur = this.$store.state.prodi.listJalur;
+          this.filterJalur();
+        }else{
+          this.listJalur = this.$store.state.prodi.listJalur
         }
       },
-      deep:true
     },
-    cariSekolah: {
-      handler: function(val, oldVal){
-        if(oldVal && !val){
-          this.listSekolah = this.listMostSekolah
-        }
-      }
-    }
   },
 };
 </script>

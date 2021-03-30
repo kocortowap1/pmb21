@@ -411,49 +411,16 @@ export default {
               this.$router.push(`/login?email=${request.person.email}`);
             }, 2000);
             return false;
-        // this.modal.headerType = "success";
-        // this.modal.title = "Pendaftaran Sukses !!";
-        // this.modal.content =
-        //   "Pendaftaran berhasil. Selanjutnya silakan login untuk melengkapi data";
-        // this.modal.actionAfter = true;
+
       } else {
         this.createModal("Gagal!!", "danger", request.errMessage).then(() => {
           return false;
         });
-        // this.modal.headerType = "danger";
-        // this.modal.title = "Pendaftaran Gagal !!";
-        // this.modal.content = "Pendaftaran Gagal. " + request.errMessage;
-        // this.modal.actionAfter = true
+
       }
-      // this.$refs["modal-info"].show();
-      // data["tanggal_lahir"] = this.tanggalLahir;
-      // this.$store
-      //   .dispatch("auth/registrasi", { person: data })
-      //   .then((res) => {
-      //     console.log(res);
-      //     this.createModal(
-      //       "Sukses",
-      //       "success",
-      //       "Pendaftaran berhasil dilakukan, silakan login untuk melengkapi data"
-      //     )
-      //       .then(() => {
-      //         this.$nextTick(() => {
-      //           this.resetForm();
-      //         });
-      //         this.$router.push(`/login?email=${this.person.email}`);
-      //       })
-      //       .catch(() => {
-      //         return false;
-      //       });
-      //   })
-      //   .catch((err) => {
-      //     this.createModal("Gagal!!", "danger", err.errorMessage).then(() => {
-      //       return false;
-      //     });
-      //   });
+
     },
     resetForm() {
-      // Object.keys(this.person).forEach((x) => (this.person[x] = ""));
       this.person = {};
       this.confirm = "";
       this.$refs.observeForm.reset();

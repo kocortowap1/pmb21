@@ -1,34 +1,11 @@
 <template>
-  <!-- <div class="beranda">
-      <b-container>
-          <b-row>
-              <b-col cols="12" sm="12" md="3">
-                  <b-img alt="foto profil" src="https://pointchurch.com/wp-content/uploads/2019/02/Blank-Person-Image.png" height="300"></b-img>
-              </b-col>
-              <b-col cols="12" sm="12" md="9">
-                  <h4>Identitas Pendaftar</h4>
-                  <table class="table table-sm table-borderless">
-                      <tr>
-                          <td width="20%">Nama</td>
-                          <td width="2%">:</td>
-                          <th>Sample</th>
-                      </tr>
-                      <tr>
-                          <td width="20%">Jenis Kelamin</td>
-                          <td>:</td>
-                          <td>Sample</td>
-                      </tr>
-                      <tr>
-                          <td width="20%">Nomor HP</td>
-                          <td>:</td>
-                          <td>Sample</td>
-                      </tr>
-                  </table>
-              </b-col>
-          </b-row>
-      </b-container>
-  </div> -->
   <div class="row gutters-sm">
+    <div class="col-12">
+      <b-alert :show="showHello">
+        <h4>Selamat Datang {{ person.nama }}</h4>
+        Di Sistem Informasi Penerimaan Mahasiswa Baru Universitas Nurul Jadid
+      </b-alert>
+    </div>
     <div class="col-md-4 mb-3">
       <div class="card">
         <div class="card-body">
@@ -58,38 +35,41 @@
             <div class="col-sm-3">
               <h6 class="mb-0">Nama</h6>
             </div>
-            <div class="col-sm-9 text-secondary">{{person.nama}}</div>
+            <div class="col-sm-9 text-secondary">{{ person.nama }}</div>
           </div>
           <hr />
           <div class="row">
             <div class="col-sm-3">
               <h6 class="mb-0">Jenis Kelamin</h6>
             </div>
-            <div class="col-sm-9 text-secondary">{{person.jk === 'L' ? "Laki-laki" : "Perempuan"}}</div>
+            <div class="col-sm-9 text-secondary">
+              {{ person.jk === "L" ? "Laki-laki" : "Perempuan" }}
+            </div>
           </div>
           <hr />
           <div class="row">
             <div class="col-sm-3">
               <h6 class="mb-0">Tempat, Tanggal Lahir</h6>
             </div>
-            <div class="col-sm-9 text-secondary">{{person.tempat_lahir}}, {{person.tanggal_lahir}}</div>
+            <div class="col-sm-9 text-secondary">
+              {{ person.tempat_lahir }}, {{ person.tanggal_lahir }}
+            </div>
           </div>
           <hr />
           <div class="row">
             <div class="col-sm-3">
               <h6 class="mb-0">Email</h6>
             </div>
-            <div class="col-sm-9 text-secondary">{{person.email}}</div>
+            <div class="col-sm-9 text-secondary">{{ person.email }}</div>
           </div>
           <hr />
           <div class="row">
             <div class="col-sm-3">
               <h6 class="mb-0">Nomor HP</h6>
             </div>
-            <div class="col-sm-9 text-secondary">{{person.nomor_hp}}</div>
+            <div class="col-sm-9 text-secondary">{{ person.nomor_hp }}</div>
           </div>
           <hr />
-
         </div>
       </div>
     </div>
@@ -97,7 +77,7 @@
 </template>
 
 <script>
-import { BContainer, BRow, BCol, BImg } from "bootstrap-vue";
+import { BContainer, BRow, BCol, BImg, BAlert } from "bootstrap-vue";
 export default {
   name: "Beranda",
   components: {
@@ -105,6 +85,12 @@ export default {
     BRow,
     BCol,
     BImg,
+    BAlert,
+  },
+  data() {
+    return {
+      showHello: true,
+    };
   },
   computed: {
     person() {
@@ -115,6 +101,11 @@ export default {
     if (!Object.entries(this.person).length) {
       this.$store.dispatch("pendaftar/getPendaftar", this.$route.params.id);
     }
+  },
+  created() {
+    setTimeout(() => {
+      this.showHello = false;
+    }, 5000);
   },
 };
 </script>
