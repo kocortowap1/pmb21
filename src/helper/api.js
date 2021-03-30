@@ -109,11 +109,30 @@ const getPrivateData = async (url) => {
     return response
 }
 const postPrivateData = async (url, data) => {
-    const req = await axios.post(url, data)
+    const req = await axios.post(url, data, {
+        headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('b')}`,
+
+        }
+    })
+    return req
+}
+const uploadPrivateData = async(url, data) =>{
+    const req = await axios.post(url, data, {
+        headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('b')}`,
+            'Content-Type' : 'multipart/form-data;  boundary=---011000010111000001101001'
+        }
+    })
     return req
 }
 const putPrivateData = async (url, data) => {
-    const req = await axios.put(url, data)
+    const req = await axios.put(url, data, {
+        headers: {
+            'Authorization' : `Bearer ${localStorage.getItem('b')}`,
+            'Content-Type' : 'application/json'
+        }
+    })
     return req
 }
 export {
@@ -126,5 +145,5 @@ export {
     postPublicData,
     getPrivateData,
     postPrivateData,
-    putPrivateData
+    putPrivateData,uploadPrivateData
 }
