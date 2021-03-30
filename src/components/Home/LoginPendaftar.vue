@@ -121,7 +121,6 @@ export default {
         password: this.password,
         GToken: GResponse,
       });
-      console.log(dispatchLogin);
       if (dispatchLogin.status) {
         const userData = this.tokenParser(dispatchLogin.token);
         this.$router.push(`/pendaftar/${userData.id_user}`);
@@ -131,20 +130,7 @@ export default {
       setTimeout(() => {
         this.$store.commit("SET_LOADING", false, { root: true });
       }, 1000);
-      // .then((res) => {
-      //   if (res.status) {
-      //     const userData = this.tokenParser(res.token);
-      //     this.$router.push(`/pendaftar/${userData.id_user}`);
-      //   }
-      // })
-      // .catch((err) => {
-      //   this.$store.commit("SET_ERROR", err, { root: true });
-      // })
-      // .finally(() => {
-      //   this.$store.commit("SET_LOADING", false, { root: true });
-      // });
-      // .then(() => {
-      // });
+
     },
     tokenParser(token) {
       const tokenBody = token.split(".")[1];
@@ -152,11 +138,7 @@ export default {
     },
   },
   computed: {
-    // ...mapGetters({
-    //   isLoading: "isLoading",
-    //   isError: "isError",
-    //   errorMessage: "errorMessage"
-    // })
+
     isLoading: {
       get() {
         return this.$store.state.isLoading;
