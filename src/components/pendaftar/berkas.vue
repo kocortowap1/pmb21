@@ -166,7 +166,7 @@
                         margin: 1em;
                       "
                       :style="{
-                        backgroundImage: `url('/berkas/images/${b.nama_file}?token=${$store.state.auth.token}')`,
+                        backgroundImage: `url('${imageUrl}/berkas/images/${b.nama_file}?token=${$store.state.auth.token}')`,
                         width: '100px',
                         height: '150px',
                       }"
@@ -270,6 +270,7 @@ export default {
       file: null,
       fileInfo: {},
       fileState: null,
+      imageUrl : process.env.NODE_ENV === 'production' ? 'https://api.pmb.unuja.ac.id' : 'http://localhost:8080'
     };
   },
 
