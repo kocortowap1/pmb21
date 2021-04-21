@@ -10,8 +10,13 @@
       <div class="card">
         <div class="card-body">
           <div class="d-flex flex-column align-items-center text-center">
+
             <img
-              src="https://bootdey.com/img/Content/avatar/avatar7.png"
+              :src="
+                require(`../../assets/${
+                  person.jk === 'L' ? 'man.svg' : 'woman.svg'
+                }`)
+              "
               alt="Admin"
               class="rounded-circle"
               width="150"
@@ -21,8 +26,6 @@
               <p class="text-muted font-size-sm">
                 {{ person.tempat_lahir }}, {{ person.tanggal_lahir }}
               </p>
-              <!-- <button class="btn btn-primary">Follow</button>
-              <button class="btn btn-outline-primary">Message</button> -->
             </div>
           </div>
         </div>
@@ -31,7 +34,30 @@
     <div class="col-md-8">
       <div class="card mb-3">
         <div class="card-body">
-          <div class="row">
+          <h5>Persyaratan yang harus dilengkapi</h5>
+          <ul style="columns: 2">
+            <li>Pendaftaran</li>
+            <li>
+              Isian Formulir
+              <ul>
+                <li>Data Diri</li>
+                <li>Data Orang Tua</li>
+              </ul>
+            </li>
+            <li>Pembayaran</li>
+            <li>Kuisioner</li>
+            <li>
+              Berkas
+              <ul>
+                <li>Foto Diri</li>
+                <li>Scan Kartu Keluarga</li>
+                <li>Scan Ijazah</li>
+                <li>Scan STL</li>
+              </ul>
+            </li>
+            <li>Seleksi</li>
+          </ul>
+          <!-- <div class="row">
             <div class="col-sm-3">
               <h6 class="mb-0">Nama</h6>
             </div>
@@ -69,7 +95,7 @@
             </div>
             <div class="col-sm-9 text-secondary">{{ person.nomor_hp }}</div>
           </div>
-          <hr />
+          <hr /> -->
         </div>
       </div>
     </div>
@@ -77,14 +103,10 @@
 </template>
 
 <script>
-import { BContainer, BRow, BCol, BImg, BAlert } from "bootstrap-vue";
+import { BAlert } from "bootstrap-vue";
 export default {
   name: "Beranda",
   components: {
-    BContainer,
-    BRow,
-    BCol,
-    BImg,
     BAlert,
   },
   data() {
