@@ -10,14 +10,21 @@
       <div class="card">
         <div class="card-body">
           <div class="d-flex flex-column align-items-center text-center">
-
             <img
+              v-if="person.foto_diri"
+              :src="`${imageUrl}/berkas/images/${person / foto_diri}?token=${
+                $store.state.auth.token
+              }`"
+              alt="Foto Diri"
+            />
+            <img
+              v-else
               :src="
                 require(`../../assets/${
                   person.jk === 'L' ? 'man.svg' : 'woman.svg'
                 }`)
               "
-              alt="Admin"
+              alt="Blank Images"
               class="rounded-circle"
               width="150"
             />
@@ -112,6 +119,10 @@ export default {
   data() {
     return {
       showHello: true,
+      imageUrl:
+        process.env.NODE_ENV === "production"
+          ? "https://api.pmb.unuja.ac.id"
+          : "http://localhost:8080",
     };
   },
   computed: {
