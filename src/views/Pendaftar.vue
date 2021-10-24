@@ -42,6 +42,12 @@
         </router-link>
       </li>
       <li class="text-center">
+        <router-link :to="`/pendaftar/${$route.params.id}/berkas`">
+          <b-icon-cloud-upload-fill scale="2"></b-icon-cloud-upload-fill>
+          <p>Berkas Portofolio</p>
+        </router-link>
+      </li>
+      <li class="text-center">
         <router-link :to="`/pendaftar/${$route.params.id}/seleksi`">
           <b-icon-person-check-fill scale="2"></b-icon-person-check-fill>
           <p>Seleksi</p>
@@ -94,6 +100,7 @@ export default {
   computed: {
     ...mapGetters({
       userData: "auth/userData",
+      pendaftaran: "pendaftar/currentPendaftaran"
     }),
     gelombang() {
       return this.$store.state.gelombang.gelombang || [];
@@ -103,11 +110,10 @@ export default {
     },
   },
   mounted() {
-    if (!this.gelombang.length) {
-      this.$store.dispatch("gelombang/getTahunAkademikAktif").then((res) => {
-        this.$store.dispatch("gelombang/getGelombang", res.id_tahun_akademik);
-      });
-    }
+    this.$store.dispatch("gelombang/getTahunAkademikAktif").then((res) => {
+      this.$store.dispatch("gelombang/getGelombang", res.id_tahun_akademik);
+    });
+    this.$store.dispatch("pendaftar/getPendaftar", this.$route.params.id);
   },
 };
 </script>

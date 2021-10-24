@@ -20,6 +20,7 @@
               v-model="form.jenis_pendaftaran"
               class="col-sm-8 col-md-7"
               :state="errors[0] ? false : valid ? true : null"
+              :disabled="form.is_locked"
             >
               <b-form-select-option :value="null"
                 >Pilih Jenis Pendaftaran</b-form-select-option
@@ -51,6 +52,8 @@
               v-model="form.id_jenjang_pendidikan"
               class="col-sm-8 col-md-7"
               :state="errors[0] ? false : valid ? true : null"
+              :disabled="form.is_locked"
+
             >
               <b-form-select-option :value="null"
                 >Pilih Jenjang Pendidikan</b-form-select-option
@@ -83,6 +86,8 @@
               v-model="form.id_jalur"
               class="col-sm-8 col-md-7"
               :state="errors[0] ? false : valid ? true : null"
+              :disabled="form.is_locked"
+
             >
               <b-form-select-option :value="null"
                 >Pilih Jalur Pendaftaran</b-form-select-option
@@ -105,11 +110,14 @@
             label="Pilihan Prodi Utama"
             label-cols="12"
             label-cols-sm="4"
+            :disabled="!!form.is_locked"
           >
             <b-form-select
               v-model="form.pilihan_prodi_1"
               class="col-sm-8 col-md-7"
               :state="errors[0] ? false : valid ? true : null"
+              :disabled="!!form.is_locked"
+
             >
               <b-form-select-option :value="null"
                 >Pilih Prodi Utama</b-form-select-option
@@ -138,6 +146,8 @@
               v-model="form.pilihan_prodi_2"
               class="col-sm-8 col-md-7"
               :state="errors[0] ? false : valid ? true : null"
+              :disabled="!!form.is_locked"
+
             >
               <b-form-select-option :value="null"
                 >Pilih Prodi Kedua</b-form-select-option
@@ -167,6 +177,8 @@
               v-model="form.pilihan_prodi_3"
               class="col-sm-8 col-md-7"
               :state="errors[0] ? false : valid ? true : null"
+              :disabled="!!form.is_locked"
+
             >
               <b-form-select-option :value="null"
                 >Pilih Prodi Ketiga</b-form-select-option

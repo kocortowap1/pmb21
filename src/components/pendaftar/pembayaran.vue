@@ -109,9 +109,17 @@ export default {
       }
     },
     async buatPembayaran(data, index){
-
+      try {
         const bayar = await postPrivateData(`/pembayaran`,data)
-        console.log(bayar)
+        if(bayar.data.status){
+          this.$store.commit('pendaftar/SET_PEMBAYARAN', bayar.data.data)
+        }else{
+          alert(bayar.data.message)
+        }
+
+      } catch (error) {
+        alert(error)
+      }
     },
     checkVA(){
 

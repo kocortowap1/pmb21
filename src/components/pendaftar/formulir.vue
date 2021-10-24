@@ -209,7 +209,7 @@
               </validation-provider>
               <validation-provider
                 name="NIK KTP"
-                rules="required|digits:16"
+                rules="required|nikpattern"
                 v-slot="{ valid, errors }"
               >
                 <b-form-group
@@ -233,7 +233,7 @@
               </validation-provider>
               <validation-provider
                 name="Nomor KK"
-                rules="required|digits:16"
+                rules="required|nikpattern"
                 v-slot="{ valid, errors }"
               >
                 <b-form-group
@@ -662,7 +662,7 @@
               <validation-provider
                 name="NIK Ayah"
                 v-if="form.is_ayah_wafat !== 'Y'"
-                rules="required"
+                rules="required|patternnik|distinct:nik"
                 v-slot="{ valid, errors }"
               >
                 <b-form-group

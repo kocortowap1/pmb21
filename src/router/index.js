@@ -27,7 +27,7 @@ const routes = [
   },
   {
     path: '/pendaftar/:id',
-    name: 'Pendaftar',
+    // name: 'Pendaftar',
     component: Pendaftar,
     children: [
       {

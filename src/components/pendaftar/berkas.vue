@@ -47,7 +47,7 @@
                   v-slot="{ valid, errors }"
                   rules="required"
                 >
-                  <b-form-group label="Jenis Berkas">
+                  <b-form-group label="Jenis Berkas" class="mb-1" label-class="mb-0">
                     <b-form-select
                       v-model="berkas.id_jenis_berkas"
                       :state="errors[0] ? false : valid ? true : null"
@@ -55,28 +55,8 @@
                       <b-form-select-option :value="undefined"
                         >Pilih Jenis Berkas</b-form-select-option
                       >
-                      <b-form-select-option value="1"
-                        >Foto Diri</b-form-select-option
-                      >
-                      <b-form-select-option value="2"
-                        >Ijazah</b-form-select-option
-                      >
-                      <b-form-select-option value="3"
-                        >SKHUN/Transkrip Nilai</b-form-select-option
-                      >
-                      <b-form-select-option value="4"
-                        >Kartu Keluarga</b-form-select-option
-                      >
-                      <b-form-select-option value="5">KTP</b-form-select-option>
-                      <b-form-select-option value="6"
-                        >Akte Lahir</b-form-select-option
-                      >
-                      <b-form-select-option value="7"
-                        >STL/Bukti Lulus</b-form-select-option
-                      >
-                      <b-form-select-option value="8"
-                        >Lainnya</b-form-select-option
-                      >
+                      <b-form-select-option v-for="j in jenisBerkas" :key="j.id_jenis_berkas" :value="j.id_jenis_berkas">{{j.jenis_berkas}} {{!j.is_wajib ? "(optional)" : null}}</b-form-select-option>
+
                     </b-form-select>
                     <b-form-invalid-feedback>{{
                       errors[0]
@@ -84,7 +64,7 @@
                   </b-form-group>
                 </validation-provider>
                 <validation-provider name="Keterangan" v-slot="{ errors }">
-                  <b-form-group label="Keterangan">
+                  <b-form-group label="Keterangan" class="mb-1" label-class="mb-0">
                     <b-form-textarea
                       v-model="berkas.keterangan"
                       rows="2"

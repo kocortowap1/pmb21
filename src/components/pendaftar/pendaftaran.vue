@@ -64,7 +64,6 @@
                       v-model="form.id_jenjang_pendidikan"
                       class="col-sm-8 col-md-7"
                       :state="errors[0] ? false : valid ? true : null"
-                      @input="filterJalur($event)"
                     >
                       <b-form-select-option :value="null"
                         >Pilih Jenjang Pendidikan</b-form-select-option
@@ -342,18 +341,26 @@
       <div class="d-block">
         <div class="alert alert-info" v-if="!cariSekolah">
           Daftar sekolah di bawah ini adalah Asal Sekolah/PT yang sering dipilih
-          oleh calon mahasiswa baru. Anda dapat melakukan pencarian jika Asal Sekolah anda tidak tercantum dalam list berikut
+          oleh calon mahasiswa baru. Anda dapat melakukan pencarian jika Asal
+          Sekolah anda tidak tercantum dalam list berikut
         </div>
         <div class="d-flex justify-content-between">
+          <div>Filter</div>
           <div>
-            Filter
-          </div>
-          <div>
-            <b-form-input class="mb-1" placeholder="Cari Sekolah" @input="pencarianSekolah($event)"></b-form-input>
+            <b-form-input
+              class="mb-1"
+              placeholder="Cari Sekolah"
+              @input="pencarianSekolah($event)"
+            ></b-form-input>
           </div>
         </div>
 
-        <b-table small sticky-header :items="listSekolah" :fields="listSekolahField" >
+        <b-table
+          small
+          sticky-header
+          :items="listSekolah"
+          :fields="listSekolahField"
+        >
           <template #cell(id_asal_sekolah)="data">
             <input
               type="checkbox"
@@ -363,10 +370,9 @@
             />
           </template>
           <template #cell(kec)="data">
-            {{data.item.kec}} {{data.item.kab}} {{data.item.prop}}
+            {{ data.item.kec }} {{ data.item.kab }} {{ data.item.prop }}
           </template>
         </b-table>
-
       </div>
     </b-modal>
   </b-container>
@@ -435,10 +441,11 @@ export default {
       ],
       listTahunLulus: [],
       listJurusan: [],
-      listJalur: [],
+      // listJalur: [],
       form: {},
       listMostSekolah: [],
-      cariSekolah: ''
+      cariSekolah: "",
+      selectedSekolah: {},
     };
   },
   methods: {
@@ -485,13 +492,13 @@ export default {
     showModal() {
       this.$refs["search-modal"].show();
     },
-    pencarianSekolah(e){
-      if(e.length % 3 === 2){
-        getPrivateData(`/asal-sekolah?cari=${e}`).then(res => {
-          if(res.status){
-            this.listSekolah = res.data
+    pencarianSekolah(e) {
+      if (e.length % 3 === 2) {
+        getPrivateData(`/asal-sekolah?cari=${e}`).then((res) => {
+          if (res.status) {
+            this.listSekolah = res.data;
           }
-        })
+        });
       }
     },
     getMostSekolah() {
@@ -499,7 +506,7 @@ export default {
         if (res.status) {
           // console.log(res)
           this.listSekolah = res.data;
-          this.listMostSekolah = res.data
+          this.listMostSekolah = res.data;
         }
       });
     },
@@ -530,17 +537,13 @@ export default {
     filterJalur(val) {
       // console.log(`filter => ${typeof val}`)
       const jalur = this.$store.state.prodi.listJalur;
-      this.listJalur = jalur.filter(
-        (k) =>
-          k.id_jenjang_pendidikan === val
-      );
+      this.listJalur = jalur.filter((k) => k.id_jenjang_pendidikan === val);
     },
     initPendaftaran() {
       let newObj = {};
-      const pendaftaran = this.$store.getters["pendaftar/currentPendaftaran"];
-      if (Object.entries(pendaftaran).length) {
+      if (Object.entries(this.pendaftaran).length) {
         //  return pendaftaran
-        newObj = pendaftaran;
+        newObj = this.pendaftaran;
       } else {
         newObj = {
           almamater: null,
@@ -563,12 +566,26 @@ export default {
       userData: "auth/userData",
       currentGelombang: "pendaftar/currentGelombang",
       pendaftaranIndex: "pendaftar/pendaftaranIndex",
+      pendaftaran: "pendaftar/currentPendaftaran"
     }),
 
     tahunAkademik() {
       return this.$store.state.gelombang.tahunAkademik || {};
     },
+    listJalur :{
+      get(){
+        const jalur = this.$store.state.prodi.listJalur
+        if(jalur.length && this.form.id_jenjang_pendidikan){
+          return jalur.filter(k => k.id_jenjang_pendidikan === parseInt(this.form.id_jenjang_pendidikan))
+        }else{
+          return []
+        }
 
+      },
+      set(val){
+        return val
+      }
+    },
     listProdi() {
       const prodi = this.$store.state.prodi.listProdi;
       if (prodi.length) {
@@ -597,14 +614,7 @@ export default {
         return this.pilihanProdi2;
       }
     },
-    pendaftaran: {
-      get() {
-        return this.$store.state.pendaftar.pendaftaran;
-      },
-      set(val) {
-        this.$store.commit("pendaftar/SET_PENDAFTARAN", val);
-      },
-    },
+
     filteredProdi() {
       if (!this.listProdi.length) {
         return [];
@@ -618,21 +628,7 @@ export default {
         });
       }
     },
-    selectedSekolah: {
-      get() {
-        if (!this.form.id_asal_sekolah) {
-          return null;
-        } else {
-          const sekolah = this.listSekolah.find(
-            (k) => k.id_asal_sekolah === this.form.id_asal_sekolah
-          );
-          return sekolah;
-        }
-      },
-      set(val) {
-        return val;
-      },
-    },
+
     displaySekolah: {
       get() {
         if (this.form.id_asal_sekolah && this.listSekolah.length) {
@@ -662,9 +658,11 @@ export default {
         this.tahunAkademik.id_tahun_akademik
       );
     }
+    this.$store.dispatch("pendaftar/getPendaftar", this.$route.params.id);
   },
   created() {
     this.initPendaftaran();
+
   },
   watch: {
     selectedSekolah: {
@@ -674,27 +672,31 @@ export default {
         }
       },
     },
-    "form.id_jenjang_pendidikan": {
+    "form.id_asal_sekolah": {
       handler: function (val, oldVal) {
-        console.log(`idjp : ${oldVal} => ${val}`)
-        console.log(this.$store.state.prodi.listJalur)
         if (val !== oldVal) {
-          // this.filterJalur(val);
-          const jalur = this.$store.state.prodi.listJalur
-          this.listJalur = jalur.filter(j => j.id_jenjang_pendidikan == val)
-        } else {
-          this.listJalur = this.$store.state.prodi.listJalur;
+          this.getJurusan();
         }
       },
-      deep:true
     },
+    // "form.id_jenjang_pendidikan": {
+    //   handler: function (val, oldVal) {
+    //     if (val && val !== oldVal) {
+    //       // this.filterJalur(val);
+    //       const jalur = this.$store.state.prodi.listJalur;
+    //       this.listJalur = jalur.filter((j) => j.id_jenjang_pendidikan == val);
+    //     } else {
+    //       this.listJalur = this.$store.state.prodi.listJalur;
+    //     }
+    //   },
+    // },
     cariSekolah: {
-      handler: function(val, oldVal){
-        if(oldVal && !val){
-          this.listSekolah = this.listMostSekolah
+      handler: function (val, oldVal) {
+        if (oldVal && !val) {
+          this.listSekolah = this.listMostSekolah;
         }
-      }
-    }
+      },
+    },
   },
 };
 </script>

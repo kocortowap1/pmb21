@@ -102,6 +102,20 @@ extend('confirmed',{
     ...confirmed,
     message: "{_field_} tidak sama dengan {target}"
 })
+extend('nikpattern',{
+    validate(value) {
+        const pattern = /^(1[1-9]|21|[37][1-6]|5[1-3]|6[1-5]|[89][12])\d{2}\d{2}([04][1-9]|[1256][0-9]|[37][01])(0[1-9]|1[0-2])\d{2}\d{4}$/
+        return pattern.test(value)
+    },
+    message: '{_field_} tidak valid'
+})
+extend('distinct',{
+    params: ['target'],
+    validate(value, {target}){
+        return value !== target
+    },
+    message: '{_field_} tidak boleh sama dengan {target}'
+})
 
 
 // const required = () => {

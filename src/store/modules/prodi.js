@@ -38,9 +38,9 @@ const actions = {
     }
 }
 const getters = {
-    filteredJalur(state, getters, rootState){
-        return state.listJalur.filter(k => k.id_jenjang_pendidikan === parseInt(getters['pendaftar/currentPendaftaran'].id_jenjang_pendidikan))
-    }
+    // filteredJalur(state, getters){
+    //     return state.listJalur.filter(k => k.id_jenjang_pendidikan === parseInt(getters['pendaftar/currentPendaftaran'].id_jenjang_pendidikan))
+    // }
 }
 
 

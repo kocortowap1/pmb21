@@ -12,10 +12,14 @@
           <div class="d-flex flex-column align-items-center text-center">
             <img
               v-if="person.foto_diri"
-              :src="`${imageUrl}/berkas/images/${person / foto_diri}?token=${
+              :src="`${imageUrl}/berkas/images/${person.foto_diri}?token=${
                 $store.state.auth.token
               }`"
+              class="rounded-circle"
+              width="190"
+              height="200"
               alt="Foto Diri"
+              style="object-fit:cover;"
             />
             <img
               v-else
@@ -26,7 +30,10 @@
               "
               alt="Blank Images"
               class="rounded-circle"
-              width="150"
+              width="190"
+              height="200"
+              style="object-fit:cover;"
+
             />
             <div class="mt-3">
               <h4>{{ person.nama }}</h4>
@@ -42,7 +49,89 @@
       <div class="card mb-3">
         <div class="card-body">
           <h5>Persyaratan yang harus dilengkapi</h5>
-          <ul style="columns: 2">
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered table-striped">
+              <thead>
+                <th>Item</th>
+                <th>Isian</th>
+                <th>Unggah Berkas</th>
+                <th>Status</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Jalur Pendaftaran</td>
+                  <td>&check;</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Pilihan Prodi</td>
+                  <td>&check;</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Asal Pendidikan Sebelumnya</td>
+                  <td>&check;</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Data Diri</td>
+                  <td>&check;</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Data Orang tua & Wali</td>
+                  <td>&check;</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td colspan="3">Pembayaran Biaya Pendaftaran</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Kuisioner</td>
+                  <td>&check;</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Foto Diri (Terbaru)</td>
+                  <td></td>
+                  <td>&check;</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Scan Kartu Keluarga</td>
+                  <td></td>
+                  <td>&check;</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Scan Surat Tanda Lulus (STL)</td>
+                  <td></td>
+                  <td>&check;</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Scan Ijazah</td>
+                  <td></td>
+                  <td>&check;</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Scan SKHUN/Transkrip Nilai</td>
+                  <td></td>
+                  <td>&check;</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- <ul style="columns: 2">
             <li>Pendaftaran</li>
             <li>
               Isian Formulir
@@ -63,7 +152,7 @@
               </ul>
             </li>
             <li>Seleksi</li>
-          </ul>
+          </ul> -->
           <!-- <div class="row">
             <div class="col-sm-3">
               <h6 class="mb-0">Nama</h6>
@@ -122,7 +211,7 @@ export default {
       imageUrl:
         process.env.NODE_ENV === "production"
           ? "https://api.pmb.unuja.ac.id"
-          : "http://localhost:8080",
+          : "http://localhost:3000",
     };
   },
   computed: {
