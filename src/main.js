@@ -5,10 +5,10 @@ import store from './store'
 
 
 // import 'bootstrap/dist/css/bootstrap.css'
-// import './scss/custom.scss'
-import { ModalPlugin } from 'bootstrap-vue'
-Vue.use(ModalPlugin)
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import './scss/main.css'
+// import { ModalPlugin } from 'bootstrap-vue'
+// Vue.use(ModalPlugin)
+// import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 
 Vue.config.productionTip = false
