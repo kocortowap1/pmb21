@@ -1,21 +1,27 @@
 <template>
   <div id="app">
-    <Navbar />
-    <router-view/>
+    <!-- <Navbar /> -->
+    <!-- <router-view/> -->
+    <component :is="layout" ></component>
   </div>
 </template>
 <script>
-import Navbar from './components/Home/Navbar'
+// import Navbar from './components/Home/Navbar'
+import HomeLayout from './layouts/FrontLayout.vue'
+import PendaftarLayout from './layouts/PendaftarLayout.vue'
 export default {
   components: {
-    Navbar
+    // Navbar
+    'home-layout': HomeLayout,
+    'pendaftar-layout': PendaftarLayout
+  },
+  computed: {
+    layout(){
+      return `${this.$route.meta.layout || 'home'}-layout`
+    }
   }
 }
 </script>
-<style lang="scss">
-@import '~bootstrap/dist/css/bootstrap.css';
-#app{
-  margin: 0;
-  padding: 0;
-}
+<style src="./scss/main.css">
+
 </style>

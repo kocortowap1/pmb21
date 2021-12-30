@@ -1,120 +1,107 @@
 <template>
-  <b-navbar toggleable="lg" type="light" variant="light" class="shadow-sm">
-    <div class="container">
-      <b-navbar-brand href="/">PMB UNUJA</b-navbar-brand>
-
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
-      <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav>
-          <b-nav-item href="/">Home</b-nav-item>
-          <b-nav-item-dropdown text="Fakultas" left>
-            <!-- <b-dropdown-item :href="{ name: 'Fakultas', params: {id: 'fai' }}">Fakultas Agama Islam</b-dropdown-item> -->
-            <b-dropdown-item href="#" @click="$router.push({ name: 'FAI' })"
-              >Fakultas Agama Islam</b-dropdown-item
-            >
-            <b-dropdown-item href="#" @click="$router.push({ name: 'FT' })"
-              >Fakultas Teknik</b-dropdown-item
-            >
-            <b-dropdown-item href="#" @click="$router.push({ name: 'FKES' })"
-              >Fakultas Kesehatan</b-dropdown-item
-            >
-            <b-dropdown-item href="#" @click="$router.push({ name: 'SOSHUM' })"
-              >Fakultas Sosial & Humaniora</b-dropdown-item
-            >
-            <b-dropdown-item href="#" @click="$router.push({ name: 'PASCA' })"
-              >Program Pascasarjana</b-dropdown-item
-            >
-          </b-nav-item-dropdown>
-          <b-nav-item-dropdown text="Info Pendaftaran" left>
-            <b-dropdown-item
-              href="#"
-              @click="$router.push({ name: 'JalurPendaftaran' })"
-              >Jalur Pendaftaran</b-dropdown-item
-            >
-            <!-- <b-dropdown-item href="#">Prosedur Pendaftaran</b-dropdown-item> -->
-            <b-dropdown-item href="#" @click="$router.push({ name: 'Biaya' })"
-              >Biaya Pendidikan</b-dropdown-item
-            >
-            <b-dropdown-item href="#" @click="$router.push({ name: 'Panduan' })"
-              >Panduan</b-dropdown-item
-            >
-            <!-- <b-dropdown-item href="#">Petunjuk Pendaftaran</b-dropdown-item> -->
-          </b-nav-item-dropdown>
-          <!-- <b-nav-item href="#">Pengumuman</b-nav-item> -->
-          <b-nav-item href="/faq">FAQ</b-nav-item>
-          <b-nav-item href="/pengumuman">Hasil Seleksi</b-nav-item>
-          <!-- <b-nav-item href="#" disabled>Disabled</b-nav-item> -->
-        </b-navbar-nav>
-
-        <b-navbar-nav class="ml-auto">
-          <!--  <b-nav-item-dropdown right>
-              <template v-slot:button-content>
-                <em>User</em>
-              </template>
-              <b-dropdown-item href="#">Profile</b-dropdown-item>
-              <b-dropdown-item href="#">Sign Out</b-dropdown-item>
-            </b-nav-item-dropdown>-->
-          <div v-if="isLoggedIn">
-            <b-nav-item>
-              <button class="btn btn-danger" @click.prevent="logout">
-                Logout
-              </button>
-
-
-              <!-- <button class="btn btn-danger" @click.prevent="logout">Logout</button> -->
-              <!-- <a href="/login" class="btn btn-success"> Login</a> -->
-              <!-- <a href="/register" class="btn btn-primary mx-1"> Mendaftar</a> -->
-            </b-nav-item>
-          </div>
-          <div v-else>
-            <button
-              v-if="$route.path !== '/login'"
-              class="btn btn-success"
-              @click.prevent="toLink('/login')"
-            >
-              Login
-            </button>
-            <button
-              v-if="$route.path !== '/register'"
-              class="btn btn-primary mx-1"
-              @click.prevent="toLink('/register')"
-            >
-              Mendaftar
-            </button>
-            <!-- <b-nav-item href="/login" class="btn btn-primary">Login</b-nav-item> -->
-            <!-- <b-nav-item href="/register" class="btn btn-success">Register</b-nav-item> -->
-          </div>
-        </b-navbar-nav>
-      </b-collapse>
+  <div class="flex  px-4 py-4 justify-between sticky top-0 z-20 bg-[#0d295b] shadow-lg">
+    <div class="px-2 mx-2 flex-none w-64">
+      <a class="text-2xl font-bold cursor-pointer text-yellow-200" href="/">
+        PMB UNUJA
+      </a>
     </div>
-  </b-navbar>
+    <!-- mobile menu button -->
+    <div class="block md:hidden ">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6 text-white"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16"
+        />
+      </svg>
+    </div>
+    <div class="hidden md:flex justify-end  px-2 w-full mr-4">
+      <div class="flex text-white space-x-3 transition-all">
+
+        <a class="rounded-btn text-white" href="/">Home</a>
+
+        <div class="relative group">
+          <div tabindex="0" class="rounded-btn">Fakultas</div>
+          <ul
+            tabindex="0"
+            class="shadow-lg hidden group-hover:flex flex-col absolute z-20 bg-indigo-900 cursor-pointer w-64 "
+          >
+            <li class="py-2 px-3 hover:bg-indigo-600">
+              <a>Fakultas Agama Islam</a>
+            </li>
+            <li class="py-2 px-3 hover:bg-indigo-600">
+              <a>Fakultas Teknik</a>
+            </li>
+            <li class="py-2 px-3 hover:bg-indigo-600">
+              <a>Fakultas Kesehatan</a>
+            </li>
+            <li class="py-2 px-3 hover:bg-indigo-600">
+              <a>Fakultas Sosial & Humaniora</a>
+            </li >
+            <li class="py-2 px-3 hover:bg-indigo-600">
+              <a>Program Pascasarjana</a>
+            </li>
+          </ul>
+        </div>
+         <div class="relative group">
+          <div tabindex="0" class="rounded-btn">Info Pendaftaran</div>
+          <ul
+            tabindex="0"
+            class="shadow-lg hidden group-hover:flex flex-col absolute z-20 bg-indigo-900 cursor-pointer w-64 "
+          >
+            <li class="py-2 px-3 hover:bg-indigo-600">
+              <a>Jalur Pendaftaran</a>
+            </li>
+            <li class="py-2 px-3 hover:bg-indigo-600">
+              <a>Biaya Pendidikan</a>
+            </li>
+            <li class="py-2 px-3 hover:bg-indigo-600">
+              <a>Panduan</a>
+            </li>
+
+          </ul>
+        </div>
+
+        <a class="rounded-btn"> Pengumuman </a>
+      </div>
+    </div>
+    <div class="hidden md:flex-none">
+      <button class="btn btn-square btn-ghost flex">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+          />
+        </svg>
+        Login
+      </button>
+    </div>
+
+  </div>
+
 </template>
 
 <script>
-import {
-  BNavbar,
-  BNavbarNav,
-  BNavbarBrand,
-  BNavbarToggle,
-  BNavItem,
-  BNavItemDropdown,
-  BDropdownItem,
-  BCollapse,
-} from "bootstrap-vue";
+
 import { mapGetters } from "vuex";
 export default {
   name: "mainNavbar",
-  components: {
-    BNavbar,
-    BNavbarNav,
-    BNavbarBrand,
-    BNavbarToggle,
-    BNavItem,
-    BNavItemDropdown,
-    BDropdownItem,
-    BCollapse,
-  },
+
   methods: {
     logout() {
       this.$store.dispatch("auth/logout").then(() => {

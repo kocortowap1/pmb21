@@ -1,6 +1,48 @@
 <template>
   <div>
-    <div class="login-pendaftar mt-5">
+    <div class="hero min-h-screen bg-base-200">
+      <div class="flex-col justify-center hero-content lg:flex-row">
+        <div class="text-center lg:text-left">
+          <h1 class="mb-5 text-2xl font-bold">Hello there</h1>
+          <p class="mb-5">
+            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
+            excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
+            a id nisi.
+          </p>
+        </div>
+        <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+          <div class="card-body">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Email</span>
+              </label>
+              <input
+                type="text"
+                placeholder="email"
+                class="input input-bordered"
+              />
+            </div>
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Password</span>
+              </label>
+              <input
+                type="text"
+                placeholder="password"
+                class="input input-bordered"
+              />
+              <label class="label">
+                <a href="#" class="label-text-alt">Forgot password?</a>
+              </label>
+            </div>
+            <div class="form-control mt-6">
+              <input type="button" value="Login" class="btn btn-primary" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="login-pendaftar mt-5">
       <div class="container">
         <div class="row">
           <div class="col-sm-12 col-md-6 offset-md-4 col-lg-4">
@@ -70,7 +112,6 @@
                       >
                     </div>
                   </form>
-                  <!-- <p class="alert alert-danger" v-show="isError">{{ errorMessage }}</p> -->
                   <b-alert variant="danger" dismissible :show="isError">{{
                     errorMessage
                   }}</b-alert>
@@ -84,7 +125,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -130,7 +171,6 @@ export default {
       setTimeout(() => {
         this.$store.commit("SET_LOADING", false, { root: true });
       }, 1000);
-
     },
     tokenParser(token) {
       const tokenBody = token.split(".")[1];
@@ -138,7 +178,6 @@ export default {
     },
   },
   computed: {
-
     isLoading: {
       get() {
         return this.$store.state.isLoading;
