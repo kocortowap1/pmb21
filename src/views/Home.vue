@@ -4,13 +4,13 @@
       <Jumbotron />
     </section>
     <section class="my-md-2">
-      <Jalur />
+      <!-- <Jalur /> -->
     </section>
     <section class="my-0">
-      <Alur />
+      <!-- <Alur /> -->
     </section>
     <section>
-      <Footer />
+      <!-- <Footer /> -->
     </section>
 
   </div>
@@ -18,17 +18,17 @@
 
 <script>
 // @ is an alias to /src
-import Jalur from '../components/Home/jalur'
-import Alur from '../components/Home/alurReguler'
-import Footer from '../components/Home/Footer'
+// import Jalur from '../components/Home/jalur'
+// import Alur from '../components/Home/alurReguler'
+// import Footer from '../components/Home/Footer'
 import Jumbotron from '../components/Home/jumbotron'
 
 export default {
   name: 'Home',
   components: {
-    Jalur,
-    Alur,
-    Footer,
+    // Jalur,
+    // Alur,
+    // Footer,
     Jumbotron
   }
 }

@@ -1,9 +1,9 @@
 <template>
 <!-- class="bg-gradient-to-br from-blue-900 to-blue-500 min-w-full min-h-screen" -->
   <div
-    class="bg-indigo-900"
+    class="bg-biru"
   >
-    <div class="flex flex-col-reverse md:flex-row justify-between hero-content">
+    <div class="flex flex-col-reverse md:flex-row justify-around max-w-7xl h-screen">
       <div class="w-full md:w-96">
         <div class="flex justify-center">
           <img
