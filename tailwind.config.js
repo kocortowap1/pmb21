@@ -5,7 +5,8 @@ module.exports = {
   theme: {
     extend: {
       colors:{
-        'biru' : '#0d295b'
+        'biru' : '#0d295b',
+        'kuning' : '#ffcd57'
       },
 
     },

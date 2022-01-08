@@ -1,5 +1,5 @@
 <template>
-  <div class="relative bg-yellow-50 h-screen">
+  <div class="relative bg-kuning h-screen">
     <header class="flex justify-end pr-6">
       <ul class="flex font-bold text-biru py-5 space-x-3 items-center">
         <li>
@@ -68,15 +68,15 @@
         </li>
       </ul>
     </header>
-    <div class="absolute top-0 left-16 w-1/2 bg-biru pt-12 pb-6">
-      <div class="flex flex-col px-8 md:px-16 mx-4 md:mx-16">
+    <div class="absolute top-0 left-0 md:left-16 w-full md:w-1/2 bg-biru pt-6 md:pt-12 pb-4 md:pb-6">
+      <div class="flex flex-col px-4 md:px-16 mx-2 md:mx-16">
         <div class="self-stretch">
-          <span class="text-white uppercase tracking-widest"
-            >penerimaan mahasiswa baru</span
+          <div class="text-white uppercase tracking-widest text-center md:text-left"
+            >penerimaan mahasiswa baru</div
           >
           <h1
             class="
-              text-3xl
+              text-2xl
               md:text-4xl
               text-white text-center
               md:text-left
@@ -86,7 +86,7 @@
           >
             Universitas Nurul Jadid
           </h1>
-          <h3 class="text-white">Gelombang I</h3>
+          <h3 class="text-white font-bold">Gelombang I</h3>
           <ul>
             <li class="border-l-4 my-4 px-4 pb-3">
               <div
