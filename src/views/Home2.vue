@@ -86,7 +86,7 @@
           >
             Universitas Nurul Jadid
           </h1>
-          <h3 class="text-white font-bold">Gelombang I</h3>
+          <h2 class="text-white font-bold">Gelombang I</h2>
           <ul>
             <li class="border-l-4 my-4 px-4 pb-3">
               <div
