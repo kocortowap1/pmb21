@@ -50,7 +50,9 @@
           </div>
         </li>
         <li>
-          <div class="relative group">Info Pendaftaran</div>
+          <div class="relative group">
+            Info Pendaftaran
+          </div>
           <ul class="hidden group-hover:flex absolute z-20">
             <li>
               <a href="#">Jalur Pendaftaran</a>
@@ -71,9 +73,9 @@
     <div class="absolute top-0 left-0 md:left-16 w-full md:w-1/2 bg-biru pt-6 md:pt-12 pb-4 md:pb-6">
       <div class="flex flex-col px-4 md:px-16 mx-2 md:mx-16">
         <div class="self-stretch">
-          <div class="text-white uppercase tracking-widest text-center md:text-left"
-            >penerimaan mahasiswa baru</div
-          >
+          <div class="text-white uppercase tracking-widest text-center md:text-left">
+            penerimaan mahasiswa baru
+          </div>
           <h1
             class="
               text-2xl
@@ -86,7 +88,9 @@
           >
             Universitas Nurul Jadid
           </h1>
-          <h2 class="text-white font-bold">Gelombang I</h2>
+          <h2 class="text-white font-bold">
+            Gelombang I
+          </h2>
           <ul>
             <li class="border-l-4 my-4 px-4 pb-3">
               <div
